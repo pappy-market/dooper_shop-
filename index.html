@@ -4,668 +4,602 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0f766e">
-<meta name="description" content="BDU Market — marketplace for Bahir Dar University students">
+<meta name="description" content="BDU Market — Bahir Dar University student marketplace">
 <title>BDU Market</title>
 
-<!-- Telegram Mini App SDK -->
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
 <style>
 :root{
   --primary:#0f766e;--primary2:#115e59;--accent:#f59e0b;
-  --bg:#f5f7f8;--card:#fff;--text:#102a2a;--muted:#6b7c7c;
-  --line:#e4e9e9;--danger:#dc2626;--success:#15803d;
-  --shadow:0 10px 30px rgba(15,118,110,.08);
-  --radius:18px;
+  --bg:#f4f7f7;--card:#fff;--text:#102a2a;--muted:#708080;
+  --line:#e1e8e7;--danger:#dc2626;--success:#15803d;
+  --shadow:0 10px 30px rgba(15,118,110,.09);--r:18px
 }
 *{box-sizing:border-box}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);
+font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
 body{min-height:100vh}
 button,input,textarea,select{font:inherit}
 button{cursor:pointer;border:0}
 a{text-decoration:none;color:inherit}
 .hidden{display:none!important}
-.app{max-width:720px;margin:auto;min-height:100vh;background:var(--bg)}
-.topbar{position:sticky;top:0;z-index:20;background:rgba(245,247,248,.94);backdrop-filter:blur(14px);padding:14px 16px 10px;border-bottom:1px solid rgba(228,233,233,.75)}
-.brandrow{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.app{max-width:760px;margin:auto;min-height:100vh;background:var(--bg)}
+.topbar{position:sticky;top:0;z-index:30;background:rgba(244,247,247,.94);
+backdrop-filter:blur(16px);padding:12px 15px 10px;border-bottom:1px solid var(--line)}
+.brandrow{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .brand{display:flex;align-items:center;gap:10px}
-.logo{width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,var(--primary),#18a999);display:grid;place-items:center;color:#fff;font-weight:900;box-shadow:var(--shadow)}
-.brand h1{font-size:18px;margin:0}
-.brand small{display:block;color:var(--muted);font-size:11px;margin-top:2px}
-.iconbtn{width:40px;height:40px;border-radius:13px;background:var(--card);box-shadow:var(--shadow);font-size:18px}
-.search{margin-top:12px;position:relative}
-.search input{width:100%;height:46px;border:1px solid var(--line);border-radius:15px;background:#fff;padding:0 45px 0 15px;outline:none}
-.search span{position:absolute;right:14px;top:12px;color:var(--muted)}
-main{padding:16px 16px 96px}
-.hero{border-radius:24px;padding:22px;background:linear-gradient(135deg,#0f766e,#134e4a);color:white;overflow:hidden;position:relative;margin-bottom:18px}
-.hero:after{content:"";position:absolute;width:170px;height:170px;border-radius:50%;right:-50px;top:-55px;background:rgba(255,255,255,.10)}
-.hero h2{margin:0 0 7px;font-size:25px;line-height:1.1;max-width:78%}
-.hero p{margin:0;opacity:.86;font-size:13px;max-width:75%;line-height:1.5}
-.hero .heroaction{margin-top:16px;background:white;color:var(--primary);padding:10px 14px;border-radius:12px;font-weight:800}
-.sectionhead{display:flex;align-items:center;justify-content:space-between;margin:20px 0 11px}
-.sectionhead h2{font-size:17px;margin:0}
-.sectionhead button{background:none;color:var(--primary);font-weight:700;font-size:12px}
-.cats{display:flex;gap:9px;overflow:auto;padding-bottom:4px;scrollbar-width:none}
-.cats::-webkit-scrollbar{display:none}
-.cat{white-space:nowrap;padding:10px 13px;border-radius:13px;background:#fff;border:1px solid var(--line);color:#355050;font-weight:700;font-size:12px}
-.cat.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.logo{width:44px;height:44px;border-radius:15px;background:linear-gradient(135deg,#0f766e,#19a995);
+display:grid;place-items:center;color:#fff;font-weight:950;box-shadow:var(--shadow)}
+.brand h1{font-size:18px;margin:0;letter-spacing:-.3px}.brand small{display:block;color:var(--muted);font-size:11px;margin-top:2px}
+.topactions{display:flex;gap:7px}.iconbtn{width:40px;height:40px;border-radius:13px;background:#fff;
+box-shadow:var(--shadow);font-size:18px;border:1px solid var(--line)}
+.admin-icon{background:#fff6e6}
+.search{margin-top:11px;position:relative}.search input{width:100%;height:46px;border:1px solid var(--line);
+border-radius:15px;background:#fff;padding:0 45px 0 15px;outline:none}.search span{position:absolute;right:14px;top:12px;color:var(--muted)}
+main{padding:16px 15px 100px}.hero{border-radius:24px;padding:22px;background:linear-gradient(135deg,#0f766e,#134e4a);
+color:#fff;position:relative;overflow:hidden;margin-bottom:18px}.hero:after{content:"";position:absolute;width:190px;height:190px;
+border-radius:50%;right:-70px;top:-75px;background:rgba(255,255,255,.1)}.hero h2{margin:0 0 8px;font-size:26px;line-height:1.08;max-width:78%}
+.hero p{margin:0;opacity:.87;font-size:13px;max-width:78%;line-height:1.5}.heroaction{margin-top:16px;background:#fff;color:var(--primary);
+padding:10px 14px;border-radius:12px;font-weight:850}.sectionhead{display:flex;align-items:center;justify-content:space-between;margin:20px 0 11px}
+.sectionhead h2{font-size:17px;margin:0}.sectionhead button{background:none;color:var(--primary);font-weight:800;font-size:12px}
+.cats{display:flex;gap:9px;overflow:auto;padding-bottom:4px;scrollbar-width:none}.cats::-webkit-scrollbar{display:none}
+.cat{flex:0 0 auto;background:#fff;border:1px solid var(--line);padding:10px 13px;border-radius:14px;font-size:12px;font-weight:800}
+.cat.active{background:#e5f4f2;border-color:#8fd1ca;color:var(--primary)}
 .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.card{background:#fff;border-radius:18px;overflow:hidden;border:1px solid var(--line);box-shadow:0 4px 16px rgba(0,0,0,.035)}
-.picwrap{aspect-ratio:1/1;position:relative;background:#edf2f2}
-.picwrap img{width:100%;height:100%;object-fit:cover;display:block}
-.badge{position:absolute;left:9px;top:9px;background:rgba(255,255,255,.92);padding:5px 8px;border-radius:9px;font-size:10px;font-weight:800}
-.cardbody{padding:11px}
-.cardname{font-weight:800;font-size:14px;line-height:1.25;min-height:35px}
-.price{font-weight:900;color:var(--primary);margin-top:6px}
-.meta{display:flex;justify-content:space-between;gap:6px;color:var(--muted);font-size:10px;margin-top:5px}
-.add{width:100%;margin-top:9px;background:var(--primary);color:white;border-radius:11px;padding:9px;font-weight:800}
-.add:disabled{background:#aab7b7;cursor:not-allowed}
-.bottomnav{position:fixed;z-index:30;bottom:0;left:50%;transform:translateX(-50%);width:min(720px,100%);display:grid;grid-template-columns:repeat(5,1fr);background:rgba(255,255,255,.96);backdrop-filter:blur(15px);border-top:1px solid var(--line);padding:8px 7px calc(8px + env(safe-area-inset-bottom))}
-.navbtn{background:none;color:#789090;font-size:10px;font-weight:700;display:flex;flex-direction:column;gap:3px;align-items:center}
-.navbtn b{font-size:19px;line-height:1}
-.navbtn.active{color:var(--primary)}
-.count{position:absolute;margin-left:17px;margin-top:-5px;background:var(--danger);color:#fff;border-radius:50%;font-size:9px;min-width:16px;height:16px;display:grid;place-items:center}
-.page{min-height:60vh}
-.detail{background:#fff;border-radius:22px;overflow:hidden;border:1px solid var(--line)}
-.detailimg{width:100%;aspect-ratio:1/1;object-fit:cover;background:#edf2f2}
-.detailbody{padding:18px}
-.back{background:#fff;border:1px solid var(--line);border-radius:12px;padding:9px 12px;font-weight:700;margin-bottom:12px}
-.stars{color:#f59e0b;letter-spacing:1px}
-.detail h2{font-size:24px;margin:8px 0}
-.detailprice{font-size:22px;font-weight:900;color:var(--primary)}
-.desc{color:#5f7272;line-height:1.6;font-size:14px;white-space:pre-wrap}
-.qty{display:flex;align-items:center;gap:12px;margin:15px 0}
-.qty button{width:36px;height:36px;border-radius:11px;background:#edf4f3;font-size:20px}
-.qty span{font-weight:900;min-width:20px;text-align:center}
-.primary{background:var(--primary);color:#fff;padding:13px 16px;border-radius:13px;font-weight:900}
-.secondary{background:#edf4f3;color:var(--primary2);padding:13px 16px;border-radius:13px;font-weight:900}
-.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.review{border-top:1px solid var(--line);padding:13px 0}
-.reviewhead{display:flex;justify-content:space-between;font-size:12px;font-weight:800}
-.review p{font-size:13px;color:#5f7272;margin:6px 0 0;line-height:1.45}
-.form{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px}
-.field{margin-bottom:13px}
-.field label{display:block;font-size:12px;font-weight:800;margin-bottom:6px}
-.field input,.field textarea,.field select{width:100%;border:1px solid var(--line);border-radius:12px;padding:11px;outline:none;background:#fff}
-.field textarea{min-height:80px;resize:vertical}
-.summary{background:#f1f7f6;border-radius:15px;padding:13px;margin-bottom:15px}
-.sumrow{display:flex;justify-content:space-between;font-size:13px;margin:5px 0}
-.sumtotal{font-weight:900;font-size:17px;border-top:1px solid #dce8e6;padding-top:8px;margin-top:8px}
-.empty{text-align:center;padding:45px 15px;color:var(--muted)}
-.toast{position:fixed;z-index:100;left:50%;bottom:86px;transform:translateX(-50%) translateY(20px);background:#173333;color:#fff;padding:11px 15px;border-radius:13px;font-size:12px;opacity:0;pointer-events:none;transition:.25s;max-width:90%;text-align:center}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-.modal{position:fixed;inset:0;z-index:80;background:rgba(0,0,0,.48);display:flex;align-items:flex-end;justify-content:center}
-.sheet{background:#fff;width:min(720px,100%);max-height:92vh;overflow:auto;border-radius:25px 25px 0 0;padding:18px 16px calc(25px + env(safe-area-inset-bottom))}
-.sheettop{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-.sheet h2{margin:0;font-size:20px}
-.close{width:36px;height:36px;border-radius:11px;background:#eef2f2}
-.adminbar{display:flex;gap:8px;overflow:auto;margin-bottom:12px}
-.adminbar button{white-space:nowrap;padding:9px 11px;border-radius:11px;background:#fff;border:1px solid var(--line);font-size:12px;font-weight:800}
-.adminbar button.active{background:var(--primary);color:#fff}
-.statgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-.stat{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px}
-.stat strong{font-size:23px;display:block}
-.stat span{font-size:11px;color:var(--muted)}
-.adminlist{display:grid;gap:10px;margin-top:12px}
-.adminitem{background:#fff;border:1px solid var(--line);border-radius:15px;padding:11px;display:flex;gap:10px;align-items:center}
-.adminitem img{width:56px;height:56px;border-radius:11px;object-fit:cover;background:#edf2f2}
-.adminitemmain{flex:1;min-width:0}
-.adminitemmain strong{display:block;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.adminitemmain small{display:block;color:var(--muted);font-size:10px;margin-top:4px}
-.adminactions{display:flex;gap:5px}
-.adminactions button{padding:8px;border-radius:9px;background:#eef4f3;font-size:11px}
-.adminactions .danger{color:var(--danger)}
-.notice{padding:11px;border-radius:12px;background:#fff7df;color:#795d11;font-size:12px;line-height:1.5;margin-bottom:12px}
-.filelabel{display:block;border:1px dashed #aabbbb;border-radius:13px;padding:18px;text-align:center;background:#fafcfc;color:#567;cursor:pointer}
-.filelabel input{display:none}
-.preview{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:14px;margin-top:8px}
-.ordercard{background:#fff;border:1px solid var(--line);border-radius:16px;padding:13px;margin-bottom:10px}
-.orderline{display:flex;justify-content:space-between;gap:10px;font-size:12px;margin:5px 0}
-.status{display:inline-block;padding:5px 8px;border-radius:8px;background:#edf4f3;color:var(--primary2);font-size:10px;font-weight:800}
-.spinner{width:25px;height:25px;border:3px solid #d9e5e4;border-top-color:var(--primary);border-radius:50%;animation:spin .8s linear infinite;margin:30px auto}
-@keyframes spin{to{transform:rotate(360deg)}}
-.topactions{display:flex;gap:7px;align-items:center}
-.admin-icon{background:#fff4df;border-color:#f0d39a}
+.product{background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:0 5px 18px rgba(0,0,0,.035)}
+.productimg{aspect-ratio:1/1;background:#edf2f1;position:relative;overflow:hidden}.productimg img{width:100%;height:100%;object-fit:cover;display:block}
+.badge{position:absolute;top:8px;left:8px;background:#fff;padding:5px 8px;border-radius:9px;font-size:10px;font-weight:900;box-shadow:var(--shadow)}
+.stockout{position:absolute;inset:0;background:rgba(255,255,255,.72);display:grid;place-items:center;font-weight:900;color:var(--danger)}
+.productbody{padding:11px}.productname{font-weight:850;font-size:14px;line-height:1.25;min-height:35px}.price{font-weight:950;color:var(--primary);margin-top:7px}
+.meta{color:var(--muted);font-size:11px;margin-top:5px}.rating{color:#e99a00;font-size:12px}.add{width:100%;margin-top:9px;background:#e7f5f3;color:var(--primary);
+padding:9px;border-radius:11px;font-weight:850}.add:disabled{opacity:.45;cursor:not-allowed}
+.bottomnav{position:fixed;left:50%;bottom:0;transform:translateX(-50%);z-index:40;width:min(760px,100%);
+display:grid;grid-template-columns:repeat(5,1fr);background:rgba(255,255,255,.96);backdrop-filter:blur(16px);
+border-top:1px solid var(--line);padding:8px 8px calc(8px + env(safe-area-inset-bottom))}
+.navbtn{background:none;color:var(--muted);font-size:10px;font-weight:800;padding:5px;border-radius:12px}.navbtn .ni{display:block;font-size:20px;margin-bottom:2px}
+.navbtn.active{color:var(--primary);background:#eef8f6}
+.toast{position:fixed;left:50%;bottom:82px;transform:translateX(-50%);z-index:100;background:#102a2a;color:#fff;
+padding:11px 15px;border-radius:13px;font-size:12px;max-width:90%;box-shadow:0 12px 35px rgba(0,0,0,.2)}
+.modal{position:fixed;inset:0;z-index:90;background:rgba(5,25,25,.48);display:flex;align-items:flex-end;justify-content:center}
+.sheet{width:min(760px,100%);max-height:94vh;overflow:auto;background:#fff;border-radius:25px 25px 0 0;padding:17px 15px calc(25px + env(safe-area-inset-bottom));
+box-shadow:0 -20px 50px rgba(0,0,0,.2)}.sheettop{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+.sheettop h2{font-size:19px;margin:0}.close{width:38px;height:38px;border-radius:12px;background:#f2f5f5;font-size:24px;color:var(--muted)}
+.form{display:grid;gap:12px}.field label{display:block;font-size:11px;font-weight:850;margin-bottom:5px;color:#4e6262}
+.field input,.field textarea,.field select{width:100%;border:1px solid var(--line);border-radius:13px;padding:11px 12px;outline:none;background:#fff}
+.field textarea{min-height:90px;resize:vertical}.primary{background:var(--primary);color:#fff;padding:12px 15px;border-radius:13px;font-weight:900}
+.secondary{background:#edf2f1;color:var(--text);padding:12px 15px;border-radius:13px;font-weight:850}
+.danger{background:#feecec;color:var(--danger);padding:10px 12px;border-radius:11px;font-weight:850}.notice{background:#f1f8f7;border:1px solid #d9eeeb;
+padding:11px;border-radius:13px;color:#426060;font-size:12px;line-height:1.5}
+.detailimg{width:100%;max-height:360px;object-fit:cover;border-radius:20px;background:#eef2f2}.detailprice{font-size:23px;font-weight:950;color:var(--primary);margin-top:12px}
+.detaildesc{font-size:13px;line-height:1.6;color:#526565}.qtyrow{display:flex;align-items:center;gap:10px}.qtybtn{width:38px;height:38px;border-radius:11px;background:#edf2f1;font-weight:900}
+.qtynum{min-width:30px;text-align:center;font-weight:900}.split{display:grid;grid-template-columns:1fr 1fr;gap:9px}.totalbox{background:#f2f7f6;border-radius:15px;padding:13px;display:flex;justify-content:space-between;font-weight:900}
+.pageTitle{font-size:23px;margin:3px 0 15px}.empty{padding:35px 15px;text-align:center;color:var(--muted)}.empty .big{font-size:42px;margin-bottom:10px}
+.list{display:grid;gap:10px}.ordercard{background:#fff;border:1px solid var(--line);border-radius:16px;padding:13px}.orderhead{display:flex;justify-content:space-between;gap:10px}
+.status{padding:5px 8px;border-radius:9px;background:#fff4d9;color:#9a6500;font-size:10px;font-weight:900}.status.confirmed,.status.ready,.status.delivered{background:#e7f6eb;color:var(--success)}
+.status.cancelled{background:#feecec;color:var(--danger)}.orderitems{font-size:12px;color:#526565;margin:9px 0}.orderfoot{display:flex;justify-content:space-between;font-weight:900}
+.adminbar{display:flex;gap:7px;overflow:auto;margin-bottom:12px}.admintab{flex:0 0 auto;background:#fff;border:1px solid var(--line);padding:9px 12px;border-radius:12px;font-size:11px;font-weight:850}
+.admintab.active{background:#e7f5f3;color:var(--primary);border-color:#9bd6cf}.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px}.stat b{font-size:23px;display:block}.stat span{font-size:11px;color:var(--muted)}
+.adminitem{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:9px}
+.adminthumb{width:55px;height:55px;border-radius:11px;object-fit:cover;background:#edf2f1}.admininfo{flex:1;min-width:0}.admininfo b{font-size:13px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.actions{display:flex;gap:6px;flex-wrap:wrap}.smallbtn{padding:7px 9px;border-radius:9px;background:#edf2f1;font-size:10px;font-weight:850}.smallbtn.red{background:#feecec;color:var(--danger)}
+.catadmin{display:flex;align-items:center;justify-content:space-between;background:#fff;border:1px solid var(--line);border-radius:13px;padding:11px}
+.preview{width:100%;max-height:180px;object-fit:cover;border-radius:13px;background:#eef2f2;display:none}
+.spinner{width:25px;height:25px;border:3px solid #d8e5e3;border-top-color:var(--primary);border-radius:50%;animation:spin .8s linear infinite;margin:25px auto}
+@keyframes spin{to{transform:rotate(360deg)}}.skeleton{height:260px;border-radius:18px;background:linear-gradient(90deg,#edf2f1,#f8faf9,#edf2f1);background-size:200% 100%;animation:sh 1.2s infinite}
+@keyframes sh{to{background-position:-200% 0}}
+@media(min-width:600px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.stats{grid-template-columns:repeat(4,1fr)}}
 .am{font-family:"Noto Sans Ethiopic",system-ui,sans-serif}
-@media(min-width:600px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.statgrid{grid-template-columns:repeat(4,1fr)}}
 </style>
 </head>
 
 <body>
-<div class="app">
-  <header class="topbar">
-    <div class="brandrow">
-      <div class="brand">
-        <div class="logo">BDU</div>
-        <div><h1>BDU Market</h1><small id="tagline">Campus marketplace</small></div>
-      </div>
-      <div class="topactions">
-        <button class="iconbtn admin-icon" id="adminIconBtn" title="Admin">🔐</button>
-        <button class="iconbtn" id="langBtn" title="Language">አማ</button>
-      </div>
-    </div>
-    <div class="search">
-      <input id="searchInput" placeholder="Search products..." autocomplete="off">
-      <span>⌕</span>
-    </div>
-  </header>
-
-  <main id="main"></main>
-
-  <nav class="bottomnav">
-    <button class="navbtn active" data-page="home"><b>⌂</b><span data-i18n="home">Home</span></button>
-    <button class="navbtn" data-page="categories"><b>▦</b><span data-i18n="categories">Categories</span></button>
-    <button class="navbtn" data-page="cart"><b>🛒<i class="count hidden" id="cartCount">0</i></b><span data-i18n="cart">Cart</span></button>
-    <button class="navbtn" data-page="orders"><b>▤</b><span data-i18n="orders">Orders</span></button>
-    <button class="navbtn" data-page="profile"><b>◉</b><span data-i18n="profile">Profile</span></button>
-  </nav>
-</div>
-
+<div id="app" class="app"></div>
 <div id="modalRoot"></div>
-<div class="toast" id="toast"></div>
+<div id="toastRoot"></div>
 
 <script type="module">
-/* ============================================================
-   BDU MARKET — SINGLE FILE TELEGRAM MINI APP
-   Firebase backend: Firestore + Storage + Authentication
-   ============================================================ */
-
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+import {initializeApp} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
 import {
-  getFirestore, collection, doc, addDoc, setDoc, updateDoc, deleteDoc,
-  getDocs, getDoc, query, where, orderBy, limit, onSnapshot, serverTimestamp
+  getFirestore,collection,doc,getDoc,addDoc,setDoc,updateDoc,deleteDoc,
+  onSnapshot,serverTimestamp,query,orderBy
 } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 import {
-  getAuth, signInWithEmailAndPassword, signInAnonymously, onAuthStateChanged, signOut
+  getAuth,signInAnonymously,signInWithEmailAndPassword,onAuthStateChanged,signOut
 } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
 import {
-  getStorage, ref, uploadBytes, getDownloadURL, deleteObject
+  getStorage,ref,uploadBytes,getDownloadURL,deleteObject
 } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-storage.js";
 
-/* ---------- YOUR FIREBASE CONFIG FROM THE SCREENSHOT ---------- */
-const firebaseConfig = {
-  apiKey: "AIzaSyA0y_Sd6xLDZjBJTSyfDRtd4XgnPS0dKoc",
-  authDomain: "dooper-shop-fce54.firebaseapp.com",
-  projectId: "dooper-shop-fce54",
-  storageBucket: "dooper-shop-fce54.firebasestorage.app",
-  messagingSenderId: "38979650471",
-  appId: "1:38979650471:web:04992462cbcf8666ba6c82",
-  measurementId: "G-KTQZCDP1HT"
+/* =========================================================
+   FIREBASE CONFIG FROM YOUR BDU MARKET PROJECT
+   ========================================================= */
+const firebaseConfig={
+  apiKey:"AIzaSyA0y_Sd6xLDZjBJTsyfRtd4XgnPSdKoc",
+  authDomain:"dooper-shop-fce54.firebaseapp.com",
+  projectId:"dooper-shop-fce54",
+  storageBucket:"dooper-shop-fce54.firebasestorage.app",
+  messagingSenderId:"38979650471",
+  appId:"1:38979650471:web:04992462cbcf8666ba6c82",
+  measurementId:"G-KTQZCDP1HT"
 };
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const auth = getAuth(app);
-const storage = getStorage(app);
+const app=initializeApp(firebaseConfig);
+const db=getFirestore(app);
+const auth=getAuth(app);
+const storage=getStorage(app);
 
-const tg = window.Telegram?.WebApp;
-if (tg) {
-  tg.ready();
-  tg.expand();
-  try { tg.setHeaderColor("#f5f7f8"); tg.setBackgroundColor("#f5f7f8"); } catch(e){}
+/* OWNER PASSWORD REQUESTED FOR THE ADMIN UI.
+   NOTE: GitHub Pages is public, so this is a UI gate only.
+   Firebase Authentication + admins/{uid} protect real database writes. */
+const OWNER_ADMIN_PASSWORD="281888$";
+const SELLER_USERNAME="sky_dooper";
+
+const tg=window.Telegram?.WebApp||null;
+try{tg?.ready();tg?.expand()}catch(e){}
+
+const state={
+  page:"home",lang:localStorage.getItem("bdu_lang")||"en",search:"",
+  category:"",sort:"new",products:[],categories:[],orders:[],reviews:[],
+  cart:JSON.parse(localStorage.getItem("bdu_cart")||"[]"),
+  currentUser:null,admin:false,adminTab:"dashboard",loading:true
+};
+
+const $=id=>document.getElementById(id);
+const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
+const t=(en,am)=>state.lang==="am"?am:en;
+const money=n=>new Intl.NumberFormat("en-US").format(Number(n)||0)+" ETB";
+const tgUser=()=>tg?.initDataUnsafe?.user||null;
+const nameOf=p=>state.lang==="am"?(p.nameAm||p.nameEn||"Product"):(p.nameEn||p.nameAm||"Product");
+const descOf=p=>state.lang==="am"?(p.descriptionAm||p.descriptionEn||""):(p.descriptionEn||p.descriptionAm||"");
+const catName=c=>state.lang==="am"?(c.nameAm||c.nameEn):(c.nameEn||c.nameAm);
+
+function toast(msg){
+  const r=$("toastRoot");r.innerHTML='<div class="toast">'+esc(msg)+'</div>';
+  clearTimeout(window.__toast);window.__toast=setTimeout(()=>r.innerHTML="",2800);
+}
+function modal(html){$("modalRoot").innerHTML=html}
+function closeModal(){$("modalRoot").innerHTML=""}
+window.closeModal=closeModal;
+
+function getCartItems(){
+  return state.cart.map(x=>({qty:x.qty,p:state.products.find(p=>p.id===x.id)})).filter(x=>x.p);
+}
+function cartCount(){return state.cart.reduce((a,x)=>a+Number(x.qty||0),0)}
+function saveCart(){localStorage.setItem("bdu_cart",JSON.stringify(state.cart))}
+function addCart(id,qty=1){
+  const p=state.products.find(x=>x.id===id);if(!p)return;
+  if(!p.active||Number(p.stock)<=0){toast(t("Out of stock","ከክምችት ውጭ"));return}
+  const row=state.cart.find(x=>x.id===id);
+  if(row)row.qty=Math.min(Number(p.stock),row.qty+qty);else state.cart.push({id,qty});
+  saveCart();render();toast(t("Added to cart","ወደ ጋሪ ተጨምሯል"));
+}
+function removeCart(id){state.cart=state.cart.filter(x=>x.id!==id);saveCart();render()}
+function changeQty(id,d){
+  const row=state.cart.find(x=>x.id===id),p=state.products.find(x=>x.id===id);if(!row||!p)return;
+  row.qty=Math.max(0,Math.min(Number(p.stock)||1,row.qty+d));if(row.qty===0)removeCart(id);else{saveCart();render()}
 }
 
-const SELLER_USERNAME = "sky_dooper";
-const ADMIN_COLLECTION = "admins";
-
-/*
-  BDU MARKET ADMIN QUICK-ACCESS PASSWORD
-  Requested by the owner.
-
-  IMPORTANT: because this is a GitHub Pages HTML file, anything placed here
-  can be inspected by users. This password is therefore only a UI gate.
-  Firebase Authentication + the /admins/{uid} document remain the real
-  backend authorization layer.
-*/
-const OWNER_ADMIN_PASSWORD = "281888$";
-const state = {
-  lang: localStorage.getItem("bdu_lang") || "en",
-  page: "home",
-  products: [],
-  categories: [],
-  reviews: [],
-  orders: [],
-  cart: JSON.parse(localStorage.getItem("bdu_cart") || "[]"),
-  selectedProduct: null,
-  search: "",
-  category: "",
-  admin: false,
-  adminTab: "dashboard",
-  currentUser: null,
-  editingProduct: null,
-  imageFile: null
-};
-
-const T = {
-  en: {
-    tagline:"Campus marketplace",home:"Home",categories:"Categories",cart:"Cart",orders:"Orders",profile:"Profile",
-    search:"Search products...",popular:"Popular on campus",new:"New arrivals",featured:"Featured",all:"All",
-    add:"Add to cart",buy:"Buy now",details:"Product details",back:"Back",description:"Description",
-    reviews:"Reviews",noReviews:"No reviews yet.",stock:"In stock",out:"Out of stock",quantity:"Quantity",
-    total:"Total",subtotal:"Subtotal",checkout:"Checkout",emptyCart:"Your cart is empty.",
-    browse:"Browse products",order:"Place order",name:"Full name",studentId:"University ID",
-    username:"Telegram username",dorm:"Dorm / Block",room:"Room number",phone:"Phone number",
-    notes:"Order notes",required:"Required",contact:"Contact seller",orderPlaced:"Order placed!",
-    orderNo:"Order number",status:"Status",pending:"Pending",confirmed:"Confirmed",preparing:"Preparing",
-    ready:"Ready",delivered:"Delivered",cancelled:"Cancelled",noOrders:"No orders yet.",
-    profileTitle:"Your profile",telegram:"Telegram",admin:"Admin",adminLogin:"Admin login",
-    email:"Admin email",password:"Password",login:"Login",logout:"Logout",dashboard:"Dashboard",
-    products:"Products",categoriesAdmin:"Categories",addProduct:"Add product",edit:"Edit",delete:"Delete",
-    save:"Save",cancel:"Cancel",productName:"Product name",amName:"Amharic name",
-    price:"Price (ETB)",descEn:"English description",descAm:"Amharic description",stockQty:"Stock quantity",
-    image:"Product image",upload:"Upload image",active:"Available",featuredFlag:"Featured",
-    category:"Category",newCategory:"New category",categoryNameEn:"Category name (English)",
-    categoryNameAm:"Category name (Amharic)",addCategory:"Add category",noProducts:"No products found.",
-    lowStock:"Low stock",ordersAdmin:"Orders",reviewsAdmin:"Reviews",saveChanges:"Save changes",
-    confirmDelete:"Delete this product?",adminDenied:"Admin access denied.",loginFailed:"Login failed.",
-    loading:"Loading...",error:"Something went wrong.",chooseCategory:"Choose category",language:"Language",
-    clear:"Clear",orderInfo:"Order information",openSeller:"Open Telegram"
-  },
-  am: {
-    tagline:"የካምፓስ ገበያ",home:"መነሻ",categories:"ምድቦች",cart:"ጋሪ",orders:"ትዕዛዞች",profile:"መገለጫ",
-    search:"ምርቶችን ፈልግ...",popular:"በካምፓስ ተወዳጅ",new:"አዲስ ምርቶች",featured:"ተመራጭ",all:"ሁሉም",
-    add:"ወደ ጋሪ ጨምር",buy:"አሁን ግዛ",details:"የምርት ዝርዝር",back:"ተመለስ",description:"መግለጫ",
-    reviews:"ግምገማዎች",noReviews:"እስካሁን ግምገማ የለም።",stock:"በክምችት አለ",out:"ክምችት አልቋል",quantity:"ብዛት",
-    total:"ጠቅላላ",subtotal:"ንዑስ ድምር",checkout:"መክፈያ",emptyCart:"ጋሪዎ ባዶ ነው።",
-    browse:"ምርቶችን ይመልከቱ",order:"ትዕዛዝ አስገባ",name:"ሙሉ ስም",studentId:"የዩኒቨርሲቲ መታወቂያ",
-    username:"የTelegram ስም",dorm:"ዶርም / ብሎክ",room:"የክፍል ቁጥር",phone:"ስልክ ቁጥር",notes:"የትዕዛዝ ማስታወሻ",
-    required:"አስፈላጊ",contact:"ሻጩን ያነጋግሩ",orderPlaced:"ትዕዛዝዎ ተልኳል!",orderNo:"የትዕዛዝ ቁጥር",
-    status:"ሁኔታ",pending:"በመጠባበቅ ላይ",confirmed:"ተረጋግጧል",preparing:"በማዘጋጀት ላይ",
-    ready:"ዝግጁ",delivered:"ተሰጥቷል",cancelled:"ተሰርዟል",noOrders:"እስካሁን ትዕዛዝ የለም።",
-    profileTitle:"መገለጫዎ",telegram:"Telegram",admin:"አስተዳዳሪ",adminLogin:"የአስተዳዳሪ መግቢያ",
-    email:"የአስተዳዳሪ ኢሜይል",password:"የይለፍ ቃል",login:"ግባ",logout:"ውጣ",dashboard:"ዳሽቦርድ",
-    products:"ምርቶች",categoriesAdmin:"ምድቦች",addProduct:"ምርት ጨምር",edit:"አርትዕ",delete:"ሰርዝ",
-    save:"አስቀምጥ",cancel:"ሰርዝ",productName:"የምርት ስም",amName:"የአማርኛ ስም",
-    price:"ዋጋ (ETB)",descEn:"የእንግሊዝኛ መግለጫ",descAm:"የአማርኛ መግለጫ",stockQty:"የክምችት ብዛት",
-    image:"የምርት ምስል",upload:"ምስል ጫን",active:"ይገኛል",featuredFlag:"ተመራጭ",
-    category:"ምድብ",newCategory:"አዲስ ምድብ",categoryNameEn:"የምድብ ስም (እንግሊዝኛ)",
-    categoryNameAm:"የምድብ ስም (አማርኛ)",addCategory:"ምድብ ጨምር",noProducts:"ምርት አልተገኘም።",
-    lowStock:"አነስተኛ ክምችት",ordersAdmin:"ትዕዛዞች",reviewsAdmin:"ግምገማዎች",saveChanges:"ለውጥ አስቀምጥ",
-    confirmDelete:"ይህን ምርት ሰርዝ?",adminDenied:"የአስተዳዳሪ ፍቃድ የለዎትም።",loginFailed:"መግባት አልተቻለም።",
-    loading:"በመጫን ላይ...",error:"ችግር ተፈጥሯል።",chooseCategory:"ምድብ ይምረጡ",language:"ቋንቋ",
-    clear:"አጽዳ",orderInfo:"የትዕዛዝ መረጃ",openSeller:"Telegram ክፈት"
+function stars(n){
+  n=Number(n)||0;return "★".repeat(Math.round(n))+"☆".repeat(5-Math.round(n));
+}
+function avgRating(pid){
+  const a=state.reviews.filter(r=>r.productId===pid);
+  if(!a.length)return 0;return a.reduce((s,r)=>s+Number(r.rating||0),0)/a.length;
+}
+function filteredProducts(){
+  let a=state.products.filter(p=>p.active);
+  if(state.category)a=a.filter(p=>p.category===state.category);
+  if(state.search){
+    const q=state.search.toLowerCase();
+    a=a.filter(p=>(p.nameEn+" "+p.nameAm+" "+p.descriptionEn+" "+p.descriptionAm).toLowerCase().includes(q));
   }
-};
-
-function t(k){return T[state.lang][k] || T.en[k] || k}
-function esc(s=""){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
-function money(n){return new Intl.NumberFormat("en-US").format(Number(n)||0)+" ETB"}
-function nameOf(p){return state.lang==="am" ? (p.nameAm||p.nameEn||"") : (p.nameEn||p.nameAm||"")}
-function descOf(p){return state.lang==="am" ? (p.descriptionAm||p.descriptionEn||"") : (p.descriptionEn||p.descriptionAm||"")}
-function catName(c){return state.lang==="am" ? (c.nameAm||c.nameEn) : (c.nameEn||c.nameAm)}
-function stars(r=0){let n=Math.round(Number(r)||0);return "★★★★★".split("").map((x,i)=>i<n?"★":"☆").join("")}
-function showToast(msg){const el=document.getElementById("toast");el.textContent=msg;el.classList.add("show");clearTimeout(showToast.timer);showToast.timer=setTimeout(()=>el.classList.remove("show"),2500)}
-function tgUser(){
-  const u=tg?.initDataUnsafe?.user;
-  return u || null;
-}
-function saveCart(){localStorage.setItem("bdu_cart",JSON.stringify(state.cart));updateCartCount()}
-function updateCartCount(){const n=state.cart.reduce((a,x)=>a+x.qty,0),el=document.getElementById("cartCount");el.textContent=n;el.classList.toggle("hidden",!n)}
-function setPage(p){state.page=p;state.category="";document.querySelectorAll(".navbtn").forEach(b=>b.classList.toggle("active",b.dataset.page===p));render()}
-function setModal(html){document.getElementById("modalRoot").innerHTML=html}
-function closeModal(){document.getElementById("modalRoot").innerHTML=""}
-
-function productMatches(p){
-  const q=state.search.toLowerCase().trim();
-  if(!p.active) return false;
-  if(state.category && p.category!==state.category) return false;
-  if(!q) return true;
-  return [p.nameEn,p.nameAm,p.descriptionEn,p.descriptionAm,p.categoryName].join(" ").toLowerCase().includes(q);
+  if(state.sort==="priceLow")a.sort((x,y)=>x.price-y.price);
+  else if(state.sort==="priceHigh")a.sort((x,y)=>y.price-x.price);
+  else if(state.sort==="rating")a.sort((x,y)=>avgRating(y.id)-avgRating(x.id));
+  else a.sort((x,y)=>(y.createdAt?.seconds||0)-(x.createdAt?.seconds||0));
+  return a;
 }
 
 function productCard(p){
-  const qtyInCart=state.cart.find(x=>x.id===p.id)?.qty||0;
-  return `<article class="card" onclick="window.openProduct('${p.id}')">
-    <div class="picwrap">
-      <img loading="lazy" src="${esc(p.imageUrl||"https://placehold.co/600x600?text=BDU+Market")}" alt="${esc(nameOf(p))}">
-      ${p.featured?`<span class="badge">✨ ${esc(t("featured"))}</span>`:""}
+  const rating=avgRating(p.id),cat=state.categories.find(c=>c.id===p.category);
+  return `<article class="product">
+    <div class="productimg" onclick="window.openProduct('${p.id}')">
+      ${p.imageUrl?`<img loading="lazy" src="${esc(p.imageUrl)}" alt="${esc(nameOf(p))}">`:`<div style="height:100%;display:grid;place-items:center;font-size:48px">🛍️</div>`}
+      ${p.featured?'<span class="badge">⭐ FEATURED</span>':''}
+      ${Number(p.stock)<=0?'<div class="stockout">'+t("Out of stock","ከክምችት ውጭ")+'</div>':''}
     </div>
-    <div class="cardbody">
-      <div class="cardname">${esc(nameOf(p))}</div>
+    <div class="productbody">
+      <div class="productname">${esc(nameOf(p))}</div>
       <div class="price">${money(p.price)}</div>
-      <div class="meta"><span>${stars(p.rating||0)} ${Number(p.rating||0).toFixed(1)}</span><span>${Number(p.stock||0)>0?t("stock"):t("out")}</span></div>
-      <button class="add" ${Number(p.stock||0)<=0?"disabled":""} onclick="event.stopPropagation();window.addToCart('${p.id}')">${qtyInCart?`+ ${t("add")} (${qtyInCart})`:t("add")}</button>
+      <div class="meta">${esc(cat?catName(cat):t("Product","ምርት"))} · <span class="rating">${stars(rating)}</span> ${rating?rating.toFixed(1):"—"}</div>
+      <button class="add" ${Number(p.stock)<=0?"disabled":""} onclick="window.addCart('${p.id}')">${t("＋ Add to cart","＋ ወደ ጋሪ")}</button>
     </div>
   </article>`;
 }
 
-function renderHome(){
-  const featured=state.products.filter(p=>p.active&&p.featured).slice(0,6);
-  const newest=[...state.products].filter(p=>p.active).sort((a,b)=>(b.createdAtMs||0)-(a.createdAtMs||0)).slice(0,8);
-  const list=state.products.filter(productMatches);
-  return `<section class="page">
-    <div class="hero">
-      <h2>${state.lang==="am"?"በካምፓስ ላይ የሚፈልጉትን ያግኙ":"Everything you need, right on campus."}</h2>
-      <p>${state.lang==="am"?"ለባህር ዳር ዩኒቨርሲቲ ተማሪዎች የተዘጋጀ ገበያ።":"A student-first marketplace for Bahir Dar University."}</p>
-      <button class="heroaction" onclick="window.setPage('categories')">${t("browse")} →</button>
+function header(){
+  const u=tgUser(),display=u?(u.first_name||u.username||"Student"):"Student";
+  return `<header class="topbar">
+    <div class="brandrow">
+      <div class="brand">
+        <div class="logo">BDU</div>
+        <div><h1>BDU Market</h1><small>${t("Bahir Dar University marketplace","የባሕር ዳር ዩኒቨርሲቲ ገበያ")}</small></div>
+      </div>
+      <div class="topactions">
+        <button class="iconbtn admin-icon" title="Admin" onclick="window.openAdminLogin()">🔐</button>
+        <button class="iconbtn" title="English / Amharic" onclick="window.toggleLang()">አማ</button>
+      </div>
     </div>
-    <div class="sectionhead"><h2>${t("categories")}</h2></div>
-    <div class="cats"><button class="cat active" onclick="window.filterCat('')">${t("all")}</button>${state.categories.filter(c=>c.active!==false).map(c=>`<button class="cat" onclick="window.filterCat('${c.id}')">${esc(catName(c))}</button>`).join("")}</div>
-    ${featured.length?`<div class="sectionhead"><h2>✨ ${t("featured")}</h2></div><div class="grid">${featured.map(productCard).join("")}</div>`:""}
-    <div class="sectionhead"><h2>🔥 ${t("popular")}</h2><button onclick="window.setPage('categories')">${t("all")}</button></div>
-    <div class="grid">${(list.length?list:newest).slice(0,8).map(productCard).join("") || `<div class="empty" style="grid-column:1/-1">${t("noProducts")}</div>`}</div>
-    <div class="sectionhead"><h2>🆕 ${t("new")}</h2></div>
-    <div class="grid">${newest.map(productCard).join("") || `<div class="empty" style="grid-column:1/-1">${t("noProducts")}</div>`}</div>
-  </section>`;
+    ${state.page!=="admin"?`<div class="search"><input id="searchInput" value="${esc(state.search)}" placeholder="${t("Search products...","ምርቶችን ይፈልጉ...")}"><span>⌕</span></div>`:""}
+  </header>`;
 }
 
-function renderCategories(){
-  return `<section class="page"><div class="sectionhead"><h2>${t("categories")}</h2></div>
-  <div class="grid">${state.categories.filter(c=>c.active!==false).map(c=>{
-    const count=state.products.filter(p=>p.active&&p.category===c.id).length;
-    return `<button class="card" style="padding:20px;text-align:left" onclick="window.filterCat('${c.id}')">
-      <div style="font-size:30px">${esc(c.icon||"🛍️")}</div><strong style="display:block;margin-top:10px">${esc(catName(c))}</strong>
-      <small style="color:var(--muted)">${count} ${state.lang==="am"?"ምርቶች":"products"}</small>
-    </button>`;
-  }).join("")}</div></section>`;
-}
-
-function renderCart(){
-  const items=state.cart.map(x=>({...x,p:state.products.find(p=>p.id===x.id)})).filter(x=>x.p);
-  if(!items.length)return `<section class="page empty"><div style="font-size:50px">🛒</div><h2>${t("emptyCart")}</h2><button class="primary" onclick="window.setPage('home')">${t("browse")}</button></section>`;
-  const total=items.reduce((a,x)=>a+(Number(x.p.price)||0)*x.qty,0);
-  return `<section class="page"><div class="sectionhead"><h2>${t("cart")}</h2><button onclick="window.clearCart()">${t("clear")}</button></div>
-    ${items.map(x=>`<div class="ordercard"><div class="orderline"><strong>${esc(nameOf(x.p))}</strong><b>${money(x.p.price*x.qty)}</b></div>
-      <div class="orderline"><span>${money(x.p.price)} × ${x.qty}</span>
-      <span><button class="secondary" style="padding:5px 9px" onclick="window.changeQty('${x.id}',-1)">−</button>
-      <button class="secondary" style="padding:5px 9px" onclick="window.changeQty('${x.id}',1)">+</button>
-      <button class="secondary" style="padding:5px 9px" onclick="window.removeCart('${x.id}')">×</button></span></div>
-    </div>`).join("")}
-    <div class="summary"><div class="sumrow"><span>${t("subtotal")}</span><b>${money(total)}</b></div><div class="sumrow sumtotal"><span>${t("total")}</span><b>${money(total)}</b></div></div>
-    <button class="primary" style="width:100%" onclick="window.openCheckout()">${t("checkout")} →</button>
-  </section>`;
-}
-
-function renderOrders(){
-  const u=tgUser();
-  const uid=u?.id ? String(u.id) : "";
-  const mine=state.orders.filter(o=>(uid&&o.telegramId===uid)||(u?.username&&o.telegramUsername===u.username));
-  if(!mine.length)return `<section class="page empty"><div style="font-size:48px">📦</div><h2>${t("noOrders")}</h2><button class="primary" onclick="window.setPage('home')">${t("browse")}</button></section>`;
-  return `<section class="page"><div class="sectionhead"><h2>${t("orders")}</h2></div>${mine.sort((a,b)=>(b.createdAtMs||0)-(a.createdAtMs||0)).map(o=>`
-  <div class="ordercard"><div class="orderline"><strong>#${esc(o.orderNo)}</strong><span class="status">${esc(t(o.status||"pending"))}</span></div>
-  ${o.items.map(i=>`<div class="orderline"><span>${esc(i.name)} × ${i.qty}</span><b>${money(i.price*i.qty)}</b></div>`).join("")}
-  <div class="orderline"><b>${t("total")}</b><b>${money(o.total)}</b></div>
-  <small style="color:var(--muted)">${o.createdAtMs?new Date(o.createdAtMs).toLocaleString():""}</small>
-  </div>`).join("")}</section>`;
-}
-
-function renderProfile(){
-  const u=tgUser();
-  return `<section class="page"><div class="form">
-    <div style="text-align:center;padding:10px"><div class="logo" style="margin:auto;width:65px;height:65px;font-size:20px">${esc((u?.first_name||"S").slice(0,2).toUpperCase())}</div>
-    <h2>${esc([u?.first_name,u?.last_name].filter(Boolean).join(" ")||"BDU Student")}</h2>
-    <p style="color:var(--muted)">${u?.username?"@"+esc(u.username):"Telegram"}</p></div>
-    <div class="notice">🛍️ ${state.lang==="am"?"BDU Market በባህር ዳር ዩኒቨርሲቲ ተማሪዎች ግዢን ቀላል ለማድረግ ተዘጋጅቷል።":"BDU Market is built to make campus shopping easier for Bahir Dar University students."}</div>
-    <button class="secondary" style="width:100%;margin-bottom:9px" onclick="window.openSeller()">💬 ${t("contact")}</button>
-    <button class="secondary" style="width:100%" onclick="window.openAdminLogin()">🔐 ${t("admin")}</button>
-  </div></section>`;
-}
-
-function render(){
-  document.documentElement.lang=state.lang;
-  document.getElementById("tagline").textContent=t("tagline");
-  document.getElementById("searchInput").placeholder=t("search");
-  document.getElementById("langBtn").textContent=state.lang==="en"?"አማ":"EN";
-  updateCartCount();
-  let html="";
-  if(state.page==="home")html=renderHome();
-  else if(state.page==="categories")html=renderCategories();
-  else if(state.page==="cart")html=renderCart();
-  else if(state.page==="orders")html=renderOrders();
-  else if(state.page==="profile")html=renderProfile();
-  else if(state.page==="admin")html=renderAdmin();
-  document.getElementById("main").innerHTML=html;
-}
-
-function renderAdmin(){
-  if(!state.admin)return `<section class="page empty"><h2>${t("adminDenied")}</h2></section>`;
-  const tab=state.adminTab;
-  return `<section class="page">
-    <div class="sectionhead"><h2>⚙️ ${t("admin")}</h2><button onclick="window.adminLogout()">${t("logout")}</button></div>
-    <div class="adminbar">
-      ${["dashboard","products","categories","orders","reviews"].map(x=>`<button class="${tab===x?"active":""}" onclick="window.adminTab('${x}')">${esc(t(x==="orders"? "ordersAdmin":x==="reviews"?"reviewsAdmin":x))}</button>`).join("")}
+function homePage(){
+  const a=filteredProducts(),featured=a.filter(p=>p.featured),shownFeatured=featured.length?featured.slice(0,4):a.slice(0,4);
+  return `<main>
+    <section class="hero"><h2>${t("Student life. Better shopping.","የተማሪ ሕይወት። ቀላል ግዢ።")}</h2>
+      <p>${t("Affordable educational materials, beauty products and electronics for BDU students.","ለBDU ተማሪዎች ተመጣጣኝ የትምህርት እቃዎች፣ የውበት ምርቶች እና ኤሌክትሮኒክስ።")}</p>
+      <button class="heroaction" onclick="window.setPage('categories')">${t("Explore products","ምርቶችን ይመልከቱ")} →</button>
+    </section>
+    <div class="sectionhead"><h2>${t("Categories","ምድቦች")}</h2><button onclick="window.setPage('categories')">${t("See all","ሁሉንም")}</button></div>
+    <div class="cats"><button class="cat ${!state.category?"active":""}" onclick="window.filterCategory('')">✨ ${t("All","ሁሉም")}</button>
+      ${state.categories.filter(c=>c.active!==false).map(c=>`<button class="cat ${state.category===c.id?"active":""}" onclick="window.filterCategory('${c.id}')">${esc(c.icon||"🛍️")} ${esc(catName(c))}</button>`).join("")}
     </div>
-    ${tab==="dashboard"?adminDashboard():tab==="products"?adminProducts():tab==="categories"?adminCategories():tab==="orders"?adminOrders():adminReviews()}
-  </section>`;
+    <div class="sectionhead"><h2>⭐ ${t("Featured","ተመራጭ")}</h2><button onclick="window.setPage('categories')">${t("More","ተጨማሪ")}</button></div>
+    ${shownFeatured.length?`<div class="grid">${shownFeatured.map(productCard).join("")}</div>`:'<div class="empty"><div class="big">🛍️</div>'+t("Products are coming soon.","ምርቶች በቅርቡ ይመጣሉ።")+'</div>'}
+    <div class="sectionhead"><h2>🆕 ${t("New products","አዳዲስ ምርቶች")}</h2></div>
+    <div class="grid">${a.slice(0,6).map(productCard).join("")||'<div class="empty" style="grid-column:1/-1">'+t("No products found.","ምንም ምርት አልተገኘም።")+'</div>'}</div>
+  </main>`;
 }
 
-function adminDashboard(){
+function categoriesPage(){
+  return `<main><h2 class="pageTitle">${t("Categories","ምድቦች")}</h2>
+    <div class="cats" style="margin-bottom:15px"><button class="cat ${!state.category?"active":""}" onclick="window.filterCategory('')">✨ ${t("All","ሁሉም")}</button>
+    ${state.categories.filter(c=>c.active!==false).map(c=>`<button class="cat ${state.category===c.id?"active":""}" onclick="window.filterCategory('${c.id}')">${esc(c.icon||"🛍️")} ${esc(catName(c))}</button>`).join("")}</div>
+    <div class="sectionhead"><h2>${state.category?(esc(catName(state.categories.find(c=>c.id===state.category)||{}))):t("All products","ሁሉም ምርቶች")}</h2>
+      <select onchange="window.changeSort(this.value)" style="border:1px solid var(--line);border-radius:10px;padding:7px;background:#fff;font-size:11px">
+        <option value="new" ${state.sort==="new"?"selected":""}>${t("Newest","አዳዲስ")}</option>
+        <option value="priceLow" ${state.sort==="priceLow"?"selected":""}>${t("Price low","ዝቅተኛ ዋጋ")}</option>
+        <option value="priceHigh" ${state.sort==="priceHigh"?"selected":""}>${t("Price high","ከፍተኛ ዋጋ")}</option>
+        <option value="rating" ${state.sort==="rating"?"selected":""}>${t("Rating","ደረጃ")}</option>
+      </select>
+    </div>
+    <div class="grid">${filteredProducts().map(productCard).join("")||'<div class="empty" style="grid-column:1/-1"><div class="big">🔎</div>'+t("No products found.","ምንም ምርት አልተገኘም።")+'</div>'}</div>
+  </main>`;
+}
+
+function cartPage(){
+  const items=getCartItems();const total=items.reduce((s,x)=>s+x.p.price*x.qty,0);
+  return `<main><h2 class="pageTitle">${t("Your Cart","የእርስዎ ጋሪ")} ${cartCount()?`(${cartCount()})`:""}</h2>
+    ${items.length?`<div class="list">${items.map(x=>`<div class="ordercard"><div style="display:flex;gap:10px">
+      <img src="${esc(x.p.imageUrl||"")}" style="width:75px;height:75px;border-radius:13px;object-fit:cover;background:#eef2f2">
+      <div style="flex:1"><b>${esc(nameOf(x.p))}</b><div class="price">${money(x.p.price)}</div>
+      <div class="qtyrow" style="margin-top:7px"><button class="qtybtn" onclick="window.changeQty('${x.p.id}',-1)">−</button><span class="qtynum">${x.qty}</span><button class="qtybtn" onclick="window.changeQty('${x.p.id}',1)">＋</button>
+      <button class="danger" style="margin-left:auto" onclick="window.removeCart('${x.p.id}')">🗑️</button></div></div></div></div>`).join("")}</div>
+      <div class="totalbox" style="margin-top:14px"><span>${t("Total","ጠቅላላ")}</span><span>${money(total)}</span></div>
+      <button class="primary" style="width:100%;margin-top:10px" onclick="window.checkout()">${t("Checkout","ግዢውን ይጨርሱ")} →</button>
+      <button class="secondary" style="width:100%;margin-top:8px" onclick="state.cart=[];saveCart();render()">${t("Clear cart","ጋሪውን አጽዳ")}</button>`
+    :`<div class="empty"><div class="big">🛒</div><b>${t("Your cart is empty","ጋሪዎ ባዶ ነው")}</b><p>${t("Add something you like.","የሚወዱትን ምርት ይጨምሩ።")}</p><button class="primary" onclick="window.setPage('categories')">${t("Shop now","አሁን ይግዙ")}</button></div>`}
+  </main>`;
+}
+
+function ordersPage(){
+  const mine=state.currentUser?state.orders.filter(o=>o.ownerUid===state.currentUser.uid):[];
+  mine.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
+  return `<main><h2 class="pageTitle">${t("My Orders","የእኔ ትዕዛዞች")}</h2>
+  ${mine.length?`<div class="list">${mine.map(o=>`<div class="ordercard"><div class="orderhead"><b>${esc(o.orderNo)}</b><span class="status ${esc(o.status||"pending")}">${esc((o.status||"pending").toUpperCase())}</span></div>
+    <div class="orderitems">${(o.items||[]).map(i=>`${esc(i.name)} × ${i.qty}`).join("<br>")}</div>
+    <div class="orderfoot"><span>${t("Total","ጠቅላላ")}</span><span>${money(o.total)}</span></div>
+    <div class="meta" style="margin-top:7px">${t("Contact seller for confirmation:","ለማረጋገጥ ሻጩን ያግኙ፦")} @${SELLER_USERNAME}</div>
+  </div>`).join("")}</div>`
+  :`<div class="empty"><div class="big">📦</div>${t("No orders yet.","እስካሁን ምንም ትዕዛዝ የለም።")}<br><button class="primary" style="margin-top:12px" onclick="window.setPage('categories')">${t("Start shopping","ግዢ ይጀምሩ")}</button></div>`}</main>`;
+}
+
+function profilePage(){
+  const u=tgUser();
+  return `<main><h2 class="pageTitle">${t("Profile","መገለጫ")}</h2>
+    <div class="ordercard"><div style="font-size:45px">👤</div><h3 style="margin:8px 0">${esc(u?.first_name||"BDU Student")}</h3>
+    <div class="meta">@${esc(u?.username||"not_available")}</div><p class="detaildesc">${t("Your Telegram account is used to connect your marketplace orders.","የገበያ ትዕዛዞችዎን ለማገናኘት የTelegram መለያዎ ይጠቀማል።")}</p></div>
+    <div class="sectionhead"><h2>🌐 ${t("Language","ቋንቋ")}</h2></div>
+    <button class="secondary" style="width:100%" onclick="window.toggleLang()">${state.lang==="en"?"🇪🇹 አማርኛ":"🇬🇧 English"}</button>
+    <button class="primary" style="width:100%;margin-top:9px" onclick="window.openSeller()">💬 ${t("Contact @sky_dooper","@sky_dooper ያግኙ")}</button>
+  </main>`;
+}
+
+function adminPage(){
+  if(!state.admin)return `<main><div class="empty"><div class="big">🔒</div>${t("Admin authentication required.","የአስተዳዳሪ ፍቃድ ያስፈልጋል።")}</div></main>`;
+  const activeProducts=state.products.filter(p=>p.active).length;
   const pending=state.orders.filter(o=>o.status==="pending").length;
-  const low=state.products.filter(p=>p.active&&Number(p.stock||0)<=5).length;
-  const revenue=state.orders.filter(o=>o.status!=="cancelled").reduce((a,o)=>a+(Number(o.total)||0),0);
-  return `<div class="statgrid">
-    <div class="stat"><strong>${state.products.length}</strong><span>${t("products")}</span></div>
-    <div class="stat"><strong>${state.orders.length}</strong><span>${t("ordersAdmin")}</span></div>
-    <div class="stat"><strong>${pending}</strong><span>${t("pending")}</span></div>
-    <div class="stat"><strong>${low}</strong><span>${t("lowStock")}</span></div>
-  </div><div class="form" style="margin-top:12px"><div class="sumrow"><span>${t("total")}</span><b>${money(revenue)}</b></div>
-  <button class="primary" style="width:100%;margin-top:12px" onclick="window.editProduct()">${t("addProduct")} ＋</button></div>`;
+  const revenue=state.orders.filter(o=>o.status!=="cancelled").reduce((s,o)=>s+Number(o.total||0),0);
+  return `<main><div style="display:flex;align-items:center;justify-content:space-between"><h2 class="pageTitle" style="margin-bottom:10px">🔐 Admin</h2><button class="danger" onclick="window.adminLogout()">Logout</button></div>
+    <div class="adminbar">${[
+      ["dashboard","📊 "+t("Dashboard","ዳሽቦርድ")],["products","📦 "+t("Products","ምርቶች")],["categories","🗂️ "+t("Categories","ምድቦች")],["orders","🧾 "+t("Orders","ትዕዛዞች")]
+    ].map(x=>`<button class="admintab ${state.adminTab===x[0]?"active":""}" onclick="window.adminTab('${x[0]}')">${x[1]}</button>`).join("")}</div>
+    ${state.adminTab==="dashboard"?`<div class="stats">
+      <div class="stat"><b>${state.products.length}</b><span>${t("Products","ምርቶች")}</span></div>
+      <div class="stat"><b>${activeProducts}</b><span>${t("Active","ንቁ")}</span></div>
+      <div class="stat"><b>${pending}</b><span>${t("Pending","በመጠባበቅ ላይ")}</span></div>
+      <div class="stat"><b>${money(revenue)}</b><span>${t("Order value","የትዕዛዝ ዋጋ")}</span></div>
+    </div>
+    <div class="sectionhead"><h2>${t("Quick actions","ፈጣን እርምጃዎች")}</h2></div>
+    <button class="primary" style="width:100%;margin-bottom:8px" onclick="window.adminProductForm()">＋ ${t("Add product","ምርት ጨምር")}</button>
+    <button class="secondary" style="width:100%" onclick="window.adminCategoryForm()">＋ ${t("Add category","ምድብ ጨምር")}</button>`
+    :state.adminTab==="products"?adminProducts()
+    :state.adminTab==="categories"?adminCategories():adminOrders()}</main>`;
 }
 
 function adminProducts(){
-  return `<div class="form"><button class="primary" style="width:100%" onclick="window.editProduct()">${t("addProduct")} ＋</button></div>
-  <div class="adminlist">${state.products.map(p=>`<div class="adminitem">
-    <img src="${esc(p.imageUrl||"https://placehold.co/100?text=BDU")}" alt="">
-    <div class="adminitemmain"><strong>${esc(nameOf(p))}</strong><small>${money(p.price)} · ${Number(p.stock||0)} stock · ${p.active===false?"Hidden":"Active"}</small></div>
-    <div class="adminactions"><button onclick="window.editProduct('${p.id}')">${t("edit")}</button><button class="danger" onclick="window.deleteProduct('${p.id}')">🗑</button></div>
-  </div>`).join("")}</div>`;
+  return `<div class="sectionhead"><h2>${t("All products","ሁሉም ምርቶች")}</h2><button onclick="window.adminProductForm()">＋ Add</button></div>
+  <div class="list">${state.products.map(p=>`<div class="adminitem">
+    ${p.imageUrl?`<img class="adminthumb" src="${esc(p.imageUrl)}">`:`<div class="adminthumb" style="display:grid;place-items:center;font-size:25px">🛍️</div>`}
+    <div class="admininfo"><b>${esc(nameOf(p))}</b><span class="meta">${money(p.price)} · stock ${Number(p.stock)||0} · ${p.active?"active":"hidden"}</span></div>
+    <div class="actions"><button class="smallbtn" onclick="window.adminProductForm('${p.id}')">✏️</button>
+    <button class="smallbtn red" onclick="window.deleteProduct('${p.id}')">🗑️</button></div>
+  </div>`).join("")||'<div class="empty">'+t("No products.","ምንም ምርት የለም።")+'</div>'}</div>`;
 }
 
 function adminCategories(){
-  return `<div class="form">
-    <h3 style="margin-top:0">${t("newCategory")}</h3>
-    <div class="field"><label>${t("categoryNameEn")}</label><input id="newCatEn"></div>
-    <div class="field"><label>${t("categoryNameAm")}</label><input id="newCatAm"></div>
-    <div class="field"><label>Icon / Emoji</label><input id="newCatIcon" placeholder="📚"></div>
-    <button class="primary" onclick="window.addCategory()">${t("addCategory")}</button>
-  </div>
-  <div class="adminlist">${state.categories.map(c=>`<div class="adminitem"><div style="font-size:28px">${esc(c.icon||"🛍️")}</div>
-    <div class="adminitemmain"><strong>${esc(c.nameEn)}</strong><small>${esc(c.nameAm||"")}</small></div>
-    <div class="adminactions"><button onclick="window.toggleCategory('${c.id}',${c.active!==false})">${c.active===false?"Show":"Hide"}</button><button class="danger" onclick="window.deleteCategory('${c.id}')">🗑</button></div>
-  </div>`).join("")}</div>`;
+  return `<div class="sectionhead"><h2>${t("Manage categories","ምድቦችን ያስተዳድሩ")}</h2><button onclick="window.adminCategoryForm()">＋ Add</button></div>
+  <div class="list">${state.categories.map(c=>`<div class="catadmin"><div><b>${esc(c.icon||"🛍️")} ${esc(catName(c))}</b><div class="meta">${c.active===false?t("Disabled","ተሰናክሏል"):t("Active","ንቁ")}</div></div>
+    <div class="actions"><button class="smallbtn" onclick="window.adminCategoryForm('${c.id}')">✏️</button><button class="smallbtn red" onclick="window.deleteCategory('${c.id}')">🗑️</button></div></div>`).join("")}</div>`;
 }
 
 function adminOrders(){
-  return `<div class="adminlist">${state.orders.sort((a,b)=>(b.createdAtMs||0)-(a.createdAtMs||0)).map(o=>`
-    <div class="ordercard"><div class="orderline"><strong>#${esc(o.orderNo)}</strong><select onchange="window.changeOrderStatus('${o.id}',this.value)">
-      ${["pending","confirmed","preparing","ready","delivered","cancelled"].map(s=>`<option value="${s}" ${o.status===s?"selected":""}>${t(s)}</option>`).join("")}</select></div>
-      <div class="orderline"><span>${esc(o.customer?.name||"")} · ${esc(o.telegramUsername?"@"+o.telegramUsername:"")}</span><b>${money(o.total)}</b></div>
-      <div class="orderline"><span>${esc(o.customer?.dorm||"")} / ${esc(o.customer?.room||"")}</span><span>${esc(o.customer?.phone||"")}</span></div>
-      ${o.items.map(i=>`<div class="orderline"><span>${esc(i.name)} × ${i.qty}</span><span>${money(i.price*i.qty)}</span></div>`).join("")}
-    </div>`).join("") || `<div class="empty">${t("noOrders")}</div>`}</div>`;
+  const a=[...state.orders].sort((x,y)=>(y.createdAt?.seconds||0)-(x.createdAt?.seconds||0));
+  return `<div class="sectionhead"><h2>${t("Customer orders","የደንበኞች ትዕዛዞች")}</h2></div>
+  <div class="list">${a.map(o=>`<div class="ordercard"><div class="orderhead"><b>${esc(o.orderNo)}</b><span class="status ${esc(o.status||"pending")}">${esc(o.status||"pending")}</span></div>
+  <div class="meta" style="margin-top:6px">${esc(o.customer?.fullName||"Student")} · @${esc(o.telegramUsername||"—")} · ${esc(o.customer?.phone||"—")}</div>
+  <div class="meta">ID: ${esc(o.customer?.universityId||"—")} · ${esc(o.customer?.dorm||"—")} · ${esc(o.customer?.room||"—")}</div>
+  <div class="orderitems">${(o.items||[]).map(i=>`${esc(i.name)} × ${i.qty} — ${money(i.price*i.qty)}`).join("<br>")}</div>
+  <div class="orderfoot"><span>${t("Total","ጠቅላላ")}</span><span>${money(o.total)}</span></div>
+  <select style="margin-top:10px;width:100%;border:1px solid var(--line);border-radius:11px;padding:9px" onchange="window.updateOrderStatus('${o.id}',this.value)">
+    ${["pending","confirmed","preparing","ready","delivered","cancelled"].map(st=>`<option value="${st}" ${o.status===st?"selected":""}>${st}</option>`).join("")}
+  </select></div>`).join("")||'<div class="empty">'+t("No orders yet.","ምንም ትዕዛዝ የለም።")+'</div>'}</div>`;
 }
 
-function adminReviews(){
-  return `<div class="adminlist">${state.reviews.map(r=>`<div class="ordercard"><div class="reviewhead"><span>${esc(r.userName||"Student")}</span><span class="stars">${stars(r.rating)}</span></div><small style="color:var(--muted)">${esc(r.productName||"")}</small><p>${esc(r.comment||"")}</p></div>`).join("")||`<div class="empty">${t("noReviews")}</div>`}</div>`;
+function render(){
+  const appEl=$("app");
+  let body="";
+  if(state.loading)body=`<main><div class="skeleton"></div><div class="skeleton" style="margin-top:12px;height:180px"></div></main>`;
+  else if(state.page==="home")body=homePage();
+  else if(state.page==="categories")body=categoriesPage();
+  else if(state.page==="cart")body=cartPage();
+  else if(state.page==="orders")body=ordersPage();
+  else if(state.page==="profile")body=profilePage();
+  else if(state.page==="admin")body=adminPage();
+  appEl.innerHTML=header()+body+(state.page!=="admin"?`<nav class="bottomnav">
+    ${[
+      ["home","⌂",t("Home","መነሻ")],["categories","▦",t("Categories","ምድቦች")],["cart","🛒",t("Cart","ጋሪ")],["orders","📦",t("Orders","ትዕዛዞች")],["profile","◉",t("Profile","መገለጫ")]
+    ].map(x=>`<button class="navbtn ${state.page===x[0]?"active":""}" onclick="window.setPage('${x[0]}')"><span class="ni">${x[1]}${x[0]==="cart"&&cartCount()?`<sup style="font-size:9px">${cartCount()}</sup>`:""}</span>${x[2]}</button>`).join("")}</nav>`:"");
+  const sb=$("searchInput");if(sb)sb.oninput=e=>{state.search=e.target.value;render();const n=$("searchInput");if(n){n.focus();n.setSelectionRange(n.value.length,n.value.length)}};
 }
 
-/* ---------- DATA ---------- */
-async function seedDefaults(){
-  if(!state.admin || !state.currentUser) return;
-  const snap=await getDocs(collection(db,"categories"));
-  if(snap.empty){
-    const defaults=[
-      {nameEn:"Educational Materials",nameAm:"የትምህርት እቃዎች",icon:"📚",active:true},
-      {nameEn:"Cosmetics & Beauty",nameAm:"ኮስሜቲክስ እና ውበት",icon:"💄",active:true},
-      {nameEn:"Electronics",nameAm:"ኤሌክትሮኒክስ",icon:"🎧",active:true},
-      {nameEn:"Stationery",nameAm:"የጽሕፈት መሳሪያዎች",icon:"✏️",active:true},
-      {nameEn:"Other",nameAm:"ሌሎች",icon:"🛍️",active:true}
-    ];
-    for(const c of defaults) await addDoc(collection(db,"categories"),{...c,createdAt:serverTimestamp()});
-  }
-}
+window.setPage=p=>{state.page=p;state.search="";render();window.scrollTo(0,0)};
+window.toggleLang=()=>{state.lang=state.lang==="en"?"am":"en";localStorage.setItem("bdu_lang",state.lang);render()};
+window.filterCategory=id=>{state.category=id;state.page="categories";render()};
+window.changeSort=v=>{state.sort=v;render()};
+window.addCart=addCart;window.removeCart=removeCart;window.changeQty=changeQty;
 
-function subscribeData(){
-  onSnapshot(collection(db,"categories"),snap=>{
-    state.categories=snap.docs.map(d=>({id:d.id,...d.data()}));
-    render();
-  },e=>console.warn("categories",e));
-
-  onSnapshot(query(collection(db,"products"),orderBy("createdAt","desc")),snap=>{
-    state.products=snap.docs.map(d=>{
-      const x=d.data(); return {id:d.id,...x,createdAtMs:x.createdAt?.toMillis?.()||0};
-    });
-    render();
-  },async e=>{
-    console.warn("products ordered query failed; retrying simple query",e);
-    const s=await getDocs(collection(db,"products"));
-    state.products=s.docs.map(d=>({id:d.id,...d.data()}));
-    render();
-  });
-
-  onSnapshot(query(collection(db,"orders"),orderBy("createdAt","desc"),limit(100)),snap=>{
-    state.orders=snap.docs.map(d=>{const x=d.data();return{id:d.id,...x,createdAtMs:x.createdAt?.toMillis?.()||0}});
-    render();
-  },()=>{});
-  onSnapshot(query(collection(db,"reviews"),orderBy("createdAt","desc"),limit(200)),snap=>{
-    state.reviews=snap.docs.map(d=>({id:d.id,...d.data()}));
-    render();
-  },()=>{});
-}
-
-async function init(){
-  render();
-  subscribeData();
-  try{
-    if(!auth.currentUser) await signInAnonymously(auth);
-  }catch(e){
-    console.warn("Enable Anonymous Authentication in Firebase.",e);
-  }
-}
-init();
-
-/* ---------- STUDENT ACTIONS ---------- */
-window.setPage=setPage;
-window.filterCat=(id)=>{state.category=id;state.page="home";document.querySelectorAll(".navbtn").forEach(b=>b.classList.toggle("active",b.dataset.page==="home"));render()};
-window.openProduct=(id)=>{
-  const p=state.products.find(x=>x.id===id); if(!p)return;
-  state.selectedProduct=p;
-  setModal(`<div class="modal" onclick="if(event.target===this)window.closeModal()"><div class="sheet">
-    <div class="sheettop"><button class="back" onclick="window.closeModal()">← ${t("back")}</button><button class="close" onclick="window.closeModal()">×</button></div>
-    <div class="detail"><img class="detailimg" src="${esc(p.imageUrl||"https://placehold.co/600?text=BDU")}" alt="">
-      <div class="detailbody"><div class="stars">${stars(p.rating||0)} <span style="color:var(--muted);font-size:12px">${Number(p.rating||0).toFixed(1)} (${p.reviewCount||0})</span></div>
-      <h2>${esc(nameOf(p))}</h2><div class="detailprice">${money(p.price)}</div>
-      <p class="desc">${esc(descOf(p)||t("description"))}</p>
-      <div style="color:var(--muted);font-size:12px">${Number(p.stock||0)>0?"✓ "+t("stock")+": "+p.stock:t("out")}</div>
-      <div class="qty"><button onclick="window.detailQty(-1)">−</button><span id="detailQty">1</span><button onclick="window.detailQty(1)">+</button></div>
-      <div class="actions"><button class="secondary" onclick="window.addDetailCart()">${t("add")}</button><button class="primary" onclick="window.buyDetail()">${t("buy")}</button></div>
-      </div>
-    </div>
-    <div class="sectionhead"><h2>⭐ ${t("reviews")}</h2></div>
-    ${renderReviews(p.id)}
-    <button class="secondary" style="width:100%;margin-top:10px" onclick="window.openReview('${p.id}')">⭐ ${state.lang==="am"?"ግምገማ ጻፍ":"Write a review"}</button>
+window.openProduct=pid=>{
+  const p=state.products.find(x=>x.id===pid);if(!p)return;
+  const reviews=state.reviews.filter(r=>r.productId===pid).sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
+  const rating=avgRating(pid);
+  modal(`<div class="modal"><div class="sheet"><div class="sheettop"><h2>${esc(nameOf(p))}</h2><button class="close" onclick="closeModal()">×</button></div>
+  ${p.imageUrl?`<img class="detailimg" src="${esc(p.imageUrl)}">`:`<div class="detailimg" style="height:260px;display:grid;place-items:center;font-size:70px">🛍️</div>`}
+  <div class="detailprice">${money(p.price)}</div><div class="meta">${esc(state.categories.find(c=>c.id===p.category)?catName(state.categories.find(c=>c.id===p.category)):t("Product","ምርት"))} · <span class="rating">${stars(rating)}</span> ${rating?rating.toFixed(1):"No rating"}</div>
+  <p class="detaildesc">${esc(descOf(p))||t("No description yet.","ምንም መግለጫ የለም።")}</p>
+  <div class="notice">${Number(p.stock)>0?t("Available: "+p.stock,"የሚገኝ: "+p.stock):t("Out of stock","ከክምችት ውጭ")}</div>
+  <div class="split" style="margin-top:10px"><button class="secondary" onclick="window.addCart('${p.id}');closeModal()">${t("Add to cart","ወደ ጋሪ")}</button><button class="primary" onclick="window.buyNow('${p.id}')">${t("Buy now","አሁን ይግዙ")}</button></div>
+  <div class="sectionhead"><h2>⭐ ${t("Reviews","ግምገማዎች")} (${reviews.length})</h2><button onclick="window.openReview('${p.id}')">＋</button></div>
+  <div class="list">${reviews.map(r=>`<div class="ordercard"><div class="rating">${stars(r.rating)}</div><b>${esc(r.userName||"Student")}</b><div class="detaildesc">${esc(r.comment)}</div></div>`).join("")||'<div class="empty" style="padding:20px">'+t("No reviews yet. Be the first!","እርስዎ የመጀመሪያው ግምገማ ይሁኑ!")+'</div>'}</div>
   </div></div>`);
 };
-function renderReviews(pid){
-  const rs=state.reviews.filter(r=>r.productId===pid);
-  if(!rs.length)return `<div class="empty" style="padding:20px">${t("noReviews")}</div>`;
-  return rs.slice(0,20).map(r=>`<div class="review"><div class="reviewhead"><span>${esc(r.userName||"Student")}</span><span class="stars">${stars(r.rating)}</span></div><p>${esc(r.comment||"")}</p></div>`).join("");
-}
-window.closeModal=closeModal;
-window.detailQty=(d)=>{const el=document.getElementById("detailQty");let n=Math.max(1,Math.min(99,(Number(el.textContent)||1)+d));el.textContent=n};
-window.addDetailCart=()=>{const n=Number(document.getElementById("detailQty")?.textContent||1);window.addToCart(state.selectedProduct.id,n);closeModal()};
-window.buyDetail=()=>{const n=Number(document.getElementById("detailQty")?.textContent||1);window.addToCart(state.selectedProduct.id,n);closeModal();window.openCheckout()};
-window.addToCart=(id,qty=1)=>{
-  const p=state.products.find(x=>x.id===id);if(!p||Number(p.stock||0)<=0)return showToast(t("out"));
-  const found=state.cart.find(x=>x.id===id);
-  const max=Number(p.stock||99);
-  if(found)found.qty=Math.min(max,found.qty+qty);else state.cart.push({id,qty:Math.min(max,qty)});
-  saveCart();showToast("✓ "+t("add"));render();
-};
-window.changeQty=(id,d)=>{
-  const x=state.cart.find(a=>a.id===id),p=state.products.find(a=>a.id===id);if(!x)return;
-  x.qty=Math.max(0,Math.min(Number(p?.stock||99),x.qty+d));if(!x.qty)state.cart=state.cart.filter(a=>a.id!==id);saveCart();render();
-};
-window.removeCart=(id)=>{state.cart=state.cart.filter(x=>x.id!==id);saveCart();render()};
-window.clearCart=()=>{state.cart=[];saveCart();render()};
 
-window.openCheckout=()=>{
-  const items=state.cart.map(x=>({...x,p:state.products.find(p=>p.id===x.id)})).filter(x=>x.p);
-  if(!items.length)return;
-  const u=tgUser();const uname=u?.username||"";
-  const total=items.reduce((a,x)=>a+x.p.price*x.qty,0);
-  setModal(`<div class="modal"><div class="sheet"><div class="sheettop"><h2>${t("checkout")}</h2><button class="close" onclick="window.closeModal()">×</button></div>
-  <div class="summary">${items.map(x=>`<div class="sumrow"><span>${esc(nameOf(x.p))} × ${x.qty}</span><b>${money(x.p.price*x.qty)}</b></div>`).join("")}<div class="sumrow sumtotal"><span>${t("total")}</span><b>${money(total)}</b></div></div>
-  <form id="checkoutForm" class="form">
-    ${["name","studentId","username","dorm","room","phone"].map(k=>`<div class="field"><label>${t(k)} *</label><input name="${k}" ${k==="username"&&uname?`value="@${esc(uname)}"`:""} ${k==="username"&&uname?"readonly":""} required></div>`).join("")}
-    <div class="field"><label>${t("notes")}</label><textarea name="notes"></textarea></div>
-    <button class="primary" style="width:100%" type="submit">${t("order")} ✓</button>
+window.buyNow=pid=>{addCart(pid);window.checkout()};
+window.checkout=()=>{
+  const items=getCartItems();if(!items.length){toast(t("Cart is empty","ጋሪው ባዶ ነው"));return}
+  const total=items.reduce((s,x)=>s+x.p.price*x.qty,0),u=tgUser();
+  modal(`<div class="modal"><div class="sheet"><div class="sheettop"><h2>🧾 ${t("Checkout","ግዢ መጨረሻ")}</h2><button class="close" onclick="closeModal()">×</button></div>
+  <div class="totalbox"><span>${t("Order total","ጠቅላላ የትዕዛዝ ዋጋ")}</span><span>${money(total)}</span></div>
+  <form id="checkoutForm" class="form" style="margin-top:12px">
+    <div class="field"><label>${t("Full name","ሙሉ ስም")}</label><input name="fullName" required value="${esc([u?.first_name,u?.last_name].filter(Boolean).join(" "))}"></div>
+    <div class="field"><label>${t("University ID","የዩኒቨርሲቲ መታወቂያ")}</label><input name="universityId" required placeholder="e.g. BDU/1234/22"></div>
+    <div class="field"><label>Telegram username</label><input name="username" required value="${esc(u?.username||"")}"></div>
+    <div class="split"><div class="field"><label>${t("Dorm / Block","ዶርም / ብሎክ")}</label><input name="dorm" required></div><div class="field"><label>${t("Room number","የክፍል ቁጥር")}</label><input name="room" required></div></div>
+    <div class="field"><label>${t("Phone number","ስልክ ቁጥር")}</label><input name="phone" required inputmode="tel"></div>
+    <div class="field"><label>${t("Order notes","የትዕዛዝ ማስታወሻ")}</label><textarea name="notes" placeholder="${t("Optional","አማራጭ")}"></textarea></div>
+    <div class="notice">${items.map(x=>`${esc(nameOf(x.p))} × ${x.qty} = ${money(x.p.price*x.qty)}`).join("<br>")}<br><br>${t("Payment is not processed by this app. Contact @sky_dooper after placing the order.","ክፍያ በዚህ መተግበሪያ አይከናወንም። ትዕዛዙን ካስገቡ በኋላ @sky_dooper ያግኙ።")}</div>
+    <button class="primary" style="width:100%">${t("Place order","ትዕዛዝ ያስገቡ")} ✓</button>
   </form></div></div>`);
-  document.getElementById("checkoutForm").onsubmit=async e=>{
-    e.preventDefault();const fd=new FormData(e.target);const customer=Object.fromEntries(fd.entries());
+  $("checkoutForm").onsubmit=async e=>{
+    e.preventDefault();if(!auth.currentUser){toast(t("Please wait for connection","እባክዎ ግንኙነቱን ይጠብቁ"));return}
+    const fd=new FormData(e.target),customer=Object.fromEntries(fd.entries());
     const orderNo="BDU-"+Date.now().toString(36).toUpperCase();
-    const order={orderNo,ownerUid:auth.currentUser?.uid||"",telegramId:u?.id?String(u.id):"",telegramUsername:u?.username||customer.username.replace(/^@/,""),
+    const order={orderNo,ownerUid:auth.currentUser.uid,telegramId:u?.id?String(u.id):"",telegramUsername:u?.username||String(customer.username).replace(/^@/,""),
       customer,items:items.map(x=>({id:x.p.id,name:nameOf(x.p),price:Number(x.p.price),qty:x.qty})),total,status:"pending",createdAt:serverTimestamp()};
     try{
       await addDoc(collection(db,"orders"),order);
       state.cart=[];saveCart();closeModal();setPage("orders");
-      setModal(`<div class="modal"><div class="sheet"><div class="form" style="text-align:center"><div style="font-size:55px">🎉</div><h2>${t("orderPlaced")}</h2><p>${t("orderNo")}: <b>${orderNo}</b></p><p style="color:var(--muted)">Your order was saved. Contact the seller to confirm availability and payment/delivery.</p><button class="primary" style="width:100%;margin-bottom:8px" onclick="window.openSeller()">${t("contact")} @${SELLER_USERNAME}</button><button class="secondary" style="width:100%" onclick="window.closeModal()">${t("back")}</button></div></div></div>`);
-    }catch(err){console.error(err);showToast(t("error"))}
+      modal(`<div class="modal"><div class="sheet"><div class="form" style="text-align:center"><div style="font-size:55px">🎉</div>
+      <h2>${t("Order placed!","ትዕዛዝ ተሳክቷል!")}</h2><p>${t("Order number","የትዕዛዝ ቁጥር")}: <b>${orderNo}</b></p>
+      <p class="detaildesc">${t("Contact the seller to confirm availability, payment and delivery.","ተገኝነትን፣ ክፍያን እና መላኪያን ለማረጋገጥ ሻጩን ያግኙ።")}</p>
+      <button class="primary" style="width:100%" onclick="window.openSeller()">${t("Contact @sky_dooper","@sky_dooper ያግኙ")}</button>
+      <button class="secondary" style="width:100%" onclick="closeModal()">${t("Done","ተጠናቋል")}</button></div></div></div>`);
+    }catch(err){console.error(err);toast(t("Could not place order","ትዕዛዙን ማስገባት አልተቻለም"))}
   };
 };
 
-window.openReview=(pid)=>{
+window.openReview=pid=>{
   const u=tgUser();
-  setModal(`<div class="modal"><div class="sheet"><div class="sheettop"><h2>⭐ ${t("reviews")}</h2><button class="close" onclick="window.closeModal()">×</button></div>
-  <form id="reviewForm" class="form"><div class="field"><label>Rating</label><select name="rating"><option value="5">★★★★★ 5</option><option value="4">★★★★☆ 4</option><option value="3">★★★☆☆ 3</option><option value="2">★★☆☆☆ 2</option><option value="1">★☆☆☆☆ 1</option></select></div>
-  <div class="field"><label>Comment</label><textarea name="comment" required minlength="2"></textarea></div><button class="primary" style="width:100%">${state.lang==="am"?"ላክ":"Submit review"}</button></form></div></div>`);
-  document.getElementById("reviewForm").onsubmit=async e=>{
-    e.preventDefault();const fd=new FormData(e.target);
+  modal(`<div class="modal"><div class="sheet"><div class="sheettop"><h2>⭐ ${t("Write a review","ግምገማ ይጻፉ")}</h2><button class="close" onclick="closeModal()">×</button></div>
+  <form id="reviewForm" class="form"><div class="field"><label>${t("Rating","ደረጃ")}</label><select name="rating"><option value="5">★★★★★ 5</option><option value="4">★★★★☆ 4</option><option value="3">★★★☆☆ 3</option><option value="2">★★☆☆☆ 2</option><option value="1">★☆☆☆☆ 1</option></select></div>
+  <div class="field"><label>${t("Comment","አስተያየት")}</label><textarea name="comment" required minlength="2"></textarea></div><button class="primary">${t("Submit review","ግምገማ ላክ")}</button></form></div></div>`);
+  $("reviewForm").onsubmit=async e=>{
+    e.preventDefault();if(!auth.currentUser){toast(t("Please wait...","እባክዎ ይጠብቁ..."));return}
+    const fd=new FormData(e.target);
     try{
-      await addDoc(collection(db,"reviews"),{productId:pid,productName:nameOf(state.products.find(p=>p.id===pid)||{}),rating:Number(fd.get("rating")),comment:fd.get("comment"),ownerUid:auth.currentUser?.uid||"",userId:u?.id?String(u.id):"",userName:[u?.first_name,u?.last_name].filter(Boolean).join(" ")||"Student",createdAt:serverTimestamp()});
-      closeModal();showToast("✓ "+(state.lang==="am"?"ግምገማው ተልኳል":"Review submitted"));
-    }catch(err){console.error(err);showToast(t("error"))}
+      await addDoc(collection(db,"reviews"),{productId:pid,rating:Number(fd.get("rating")),comment:fd.get("comment"),ownerUid:auth.currentUser.uid,
+        userId:u?.id?String(u.id):"",userName:[u?.first_name,u?.last_name].filter(Boolean).join(" ")||"Student",createdAt:serverTimestamp()});
+      closeModal();toast(t("Review submitted","ግምገማው ተልኳል"));render();
+    }catch(err){console.error(err);toast(t("Could not submit review","ግምገማውን መላክ አልተቻለም"))}
   };
 };
 
-window.openSeller=()=>{const url="https://t.me/"+SELLER_USERNAME; if(tg?.openTelegramLink)tg.openTelegramLink(url);else window.open(url,"_blank")};
+window.openSeller=()=>{const url="https://t.me/"+SELLER_USERNAME;try{tg?.openTelegramLink(url)}catch(e){window.open(url,"_blank")}};
 
-/* ---------- ADMIN ---------- */
 window.openAdminLogin=()=>{
-  setModal(`<div class="modal"><div class="sheet"><div class="sheettop"><h2>🔐 ${t("adminLogin")}</h2><button class="close" onclick="window.closeModal()">×</button></div>
-  <div class="notice">Owner access: enter the BDU Market admin password first. Firebase still verifies the administrator account before database changes are allowed.</div>
-  <form id="ownerGateForm" class="form">
-    <div class="field"><label>Admin password</label><input type="password" name="ownerPassword" autocomplete="current-password" required autofocus></div>
-    <button class="primary" style="width:100%">🔓 Continue to Admin</button>
-  </form></div></div>`);
-
-  document.getElementById("ownerGateForm").onsubmit=async e=>{
-    e.preventDefault();
-    const fd=new FormData(e.target);
-    if(fd.get("ownerPassword")!==OWNER_ADMIN_PASSWORD){
-      showToast(state.lang==="am"?"የአስተዳዳሪ ይለፍ ቃል ልክ አይደለም":"Incorrect admin password");
-      return;
-    }
-
-    // Password is only the first gate. Do not trust it for Firestore authorization.
-    if(state.admin){
-      closeModal();
-      state.page="admin";
-      render();
-      return;
-    }
-
-    setModal(`<div class="modal"><div class="sheet"><div class="sheettop"><h2>🛡️ Firebase Admin Verification</h2><button class="close" onclick="window.closeModal()">×</button></div>
-    <div class="notice">Use the administrator email/password you created in Firebase Authentication. This second step protects the actual database and image uploads.</div>
-    <form id="firebaseLoginForm" class="form">
-      <div class="field"><label>${t("email")}</label><input type="email" name="email" required></div>
-      <div class="field"><label>${t("password")}</label><input type="password" name="password" required></div>
-      <button class="primary" style="width:100%">🔓 ${t("login")}</button>
-    </form></div></div>`);
-
-    document.getElementById("firebaseLoginForm").onsubmit=async ev=>{
-      ev.preventDefault();
-      const f=new FormData(ev.target);
-      try{
-        await signInWithEmailAndPassword(auth,f.get("email"),f.get("password"));
-        closeModal();
-        state.page="admin";
-        render();
-      }catch(err){
-        console.error(err);
-        showToast(t("loginFailed"));
-      }
+  modal(`<div class="modal"><div class="sheet"><div class="sheettop"><h2>🔐 BDU Market Admin</h2><button class="close" onclick="closeModal()">×</button></div>
+  <div class="notice">Enter the owner password first. Firebase Authentication then verifies your administrator account before any product, category, image or order changes are allowed.</div>
+  <form id="ownerGate" class="form"><div class="field"><label>Owner admin password</label><input name="pw" type="password" required autofocus autocomplete="off"></div>
+  <button class="primary" style="width:100%">🔓 Continue</button></form></div></div>`);
+  $("ownerGate").onsubmit=async e=>{
+    e.preventDefault();const pw=new FormData(e.target).get("pw");
+    if(pw!==OWNER_ADMIN_PASSWORD){toast(t("Incorrect admin password","የአስተዳዳሪ ይለፍ ቃል ልክ አይደለም"));return}
+    if(state.admin){closeModal();state.page="admin";state.adminTab="dashboard";render();return}
+    modal(`<div class="modal"><div class="sheet"><div class="sheettop"><h2>🛡️ Firebase Admin Login</h2><button class="close" onclick="closeModal()">×</button></div>
+    <div class="notice">Password accepted. Now use the administrator email and password created in Firebase Authentication.</div>
+    <form id="adminAuthForm" class="form"><div class="field"><label>Email</label><input name="email" type="email" required></div>
+    <div class="field"><label>Password</label><input name="pass" type="password" required></div><button class="primary">Login to Admin</button></form></div></div>`);
+    $("adminAuthForm").onsubmit=async ev=>{
+      ev.preventDefault();const f=new FormData(ev.target);
+      try{await signInWithEmailAndPassword(auth,f.get("email"),f.get("pass"));closeModal();state.page="admin";state.adminTab="dashboard";render()}
+      catch(err){console.error(err);toast(t("Firebase login failed","የFirebase መግቢያ አልተሳካም"))}
     };
   };
 };
 
+window.adminLogout=async()=>{await signOut(auth);state.admin=false;state.page="home";render();toast(t("Logged out","ወጥተዋል"))};
+window.adminTab=tab=>{if(!state.admin)return;state.adminTab=tab;render()};
+
+window.adminProductForm=pid=>{
+  if(!state.admin)return;
+  const p=pid?state.products.find(x=>x.id===pid):null;
+  modal(`<div class="modal"><div class="sheet"><div class="sheettop"><h2>${p?"✏️ "+t("Edit product","ምርት አስተካክል"):"＋ "+t("Add product","ምርት ጨምር")}</h2><button class="close" onclick="closeModal()">×</button></div>
+  <form id="productForm" class="form">
+    <div class="field"><label>English name</label><input name="nameEn" required value="${esc(p?.nameEn||"")}"></div>
+    <div class="field"><label>Amharic name</label><input name="nameAm" class="am" value="${esc(p?.nameAm||"")}"></div>
+    <div class="split"><div class="field"><label>Price (ETB)</label><input name="price" type="number" min="0" step="0.01" required value="${esc(p?.price??"")}"></div>
+    <div class="field"><label>Stock</label><input name="stock" type="number" min="0" step="1" required value="${esc(p?.stock??0)}"></div></div>
+    <div class="field"><label>Category</label><select name="category" required>${state.categories.map(c=>`<option value="${c.id}" ${p?.category===c.id?"selected":""}>${esc(c.icon||"")} ${esc(catName(c))}</option>`).join("")}</select></div>
+    <div class="field"><label>English description</label><textarea name="descriptionEn">${esc(p?.descriptionEn||"")}</textarea></div>
+    <div class="field"><label>Amharic description</label><textarea name="descriptionAm" class="am">${esc(p?.descriptionAm||"")}</textarea></div>
+    <div class="field"><label>Product image</label><input id="productImage" name="image" type="file" accept="image/*"><img id="imagePreview" class="preview" src="${esc(p?.imageUrl||"")}"></div>
+    <label style="display:flex;gap:8px;align-items:center;font-size:12px"><input name="featured" type="checkbox" ${p?.featured?"checked":""}> ⭐ Featured</label>
+    <label style="display:flex;gap:8px;align-items:center;font-size:12px"><input name="active" type="checkbox" ${p?.active!==false?"checked":""}> ✅ Visible to students</label>
+    <button class="primary">${p?t("Save changes","ለውጦችን አስቀምጥ"):t("Create product","ምርት ፍጠር")}</button>
+  </form></div></div>`);
+  const img=$("productImage"),prev=$("imagePreview");
+  img.onchange=()=>{const f=img.files?.[0];if(f){prev.src=URL.createObjectURL(f);prev.style.display="block"}};
+  if(p?.imageUrl)prev.style.display="block";
+  $("productForm").onsubmit=async e=>{
+    e.preventDefault();const fd=new FormData(e.target);let imageUrl=p?.imageUrl||"";
+    try{
+      const file=fd.get("image");
+      if(file&&file.size){
+        const safe=file.name.replace(/[^a-zA-Z0-9._-]/g,"_");
+        const path=`products/${Date.now()}_${safe}`;
+        const rr=ref(storage,path);
+        await uploadBytes(rr,file,{contentType:file.type});
+        imageUrl=await getDownloadURL(rr);
+      }
+      const data={nameEn:String(fd.get("nameEn")),nameAm:String(fd.get("nameAm")||""),price:Number(fd.get("price")||0),
+        stock:Number(fd.get("stock")||0),category:String(fd.get("category")),descriptionEn:String(fd.get("descriptionEn")||""),
+        descriptionAm:String(fd.get("descriptionAm")||""),imageUrl,featured:fd.get("featured")==="on",active:fd.get("active")==="on",
+        updatedAt:serverTimestamp()};
+      if(p)await updateDoc(doc(db,"products",p.id),data);else await addDoc(collection(db,"products"),{...data,createdAt:serverTimestamp()});
+      closeModal();toast(t("Product saved","ምርቱ ተቀምጧል"));render();
+    }catch(err){console.error(err);toast(t("Could not save product. Check Firebase rules.","ምርቱን ማስቀመጥ አልተቻለም።"))}
+  };
+};
+
+window.deleteProduct=async pid=>{
+  if(!state.admin)return;const p=state.products.find(x=>x.id===pid);if(!p)return;
+  if(!confirm(t("Delete this product?","ይህን ምርት ማጥፋት ይፈልጋሉ?")))return;
+  try{await deleteDoc(doc(db,"products",pid));toast(t("Product deleted","ምርቱ ተሰርዟል"));render()}catch(e){console.error(e);toast(t("Delete failed","መሰረዝ አልተሳካም"))}
+};
+
+window.adminCategoryForm=cid=>{
+  const c=cid?state.categories.find(x=>x.id===cid):null;
+  modal(`<div class="modal"><div class="sheet"><div class="sheettop"><h2>${c?"✏️ ":"＋ "}${t("Category","ምድብ")}</h2><button class="close" onclick="closeModal()">×</button></div>
+  <form id="categoryForm" class="form"><div class="field"><label>English name</label><input name="nameEn" required value="${esc(c?.nameEn||"")}"></div>
+  <div class="field"><label>Amharic name</label><input name="nameAm" class="am" value="${esc(c?.nameAm||"")}"></div>
+  <div class="field"><label>Icon / emoji</label><input name="icon" value="${esc(c?.icon||"🛍️")}"></div>
+  <label style="display:flex;gap:8px;align-items:center;font-size:12px"><input name="active" type="checkbox" ${c?.active!==false?"checked":""}> ${t("Enabled","ንቁ")}</label>
+  <button class="primary">${t("Save category","ምድቡን አስቀምጥ")}</button></form></div></div>`);
+  $("categoryForm").onsubmit=async e=>{
+    e.preventDefault();const fd=new FormData(e.target);const data={nameEn:String(fd.get("nameEn")),nameAm:String(fd.get("nameAm")||""),icon:String(fd.get("icon")||"🛍️"),active:fd.get("active")==="on",updatedAt:serverTimestamp()};
+    try{if(c)await updateDoc(doc(db,"categories",c.id),data);else await addDoc(collection(db,"categories"),{...data,createdAt:serverTimestamp()});
+      closeModal();toast(t("Category saved","ምድቡ ተቀምጧል"));render()}catch(err){console.error(err);toast(t("Category save failed","ምድቡን ማስቀመጥ አልተሳካም"))}
+  };
+};
+
+window.deleteCategory=async cid=>{
+  const used=state.products.some(p=>p.category===cid);
+  if(used){toast(t("Cannot delete a category used by products. Disable it instead.","በምርቶች የተጠቀሰ ምድብ መሰረዝ አይቻልም። ያሰናክሉት።"));return}
+  if(!confirm(t("Delete category?","ምድቡን ይሰርዙ?")))return;
+  try{await deleteDoc(doc(db,"categories",cid));toast(t("Category deleted","ምድቡ ተሰርዟል"));render()}catch(e){console.error(e);toast(t("Delete failed","መሰረዝ አልተሳካም"))}
+};
+
+window.updateOrderStatus=async(id,status)=>{
+  if(!state.admin)return;
+  try{await updateDoc(doc(db,"orders",id),{status,updatedAt:serverTimestamp()});toast(t("Order updated","ትዕዛዙ ተዘምኗል"))}
+  catch(e){console.error(e);toast(t("Could not update order","ትዕዛዙን ማዘመን አልተቻለም"))}
+};
+
+/* Firebase live data */
+function subscribe(){
+  onSnapshot(collection(db,"products"),snap=>{
+    state.products=snap.docs.map(d=>({id:d.id,...d.data()}));state.loading=false;render()
+  },err=>{console.error("products",err);state.loading=false;render()});
+  onSnapshot(collection(db,"categories"),snap=>{
+    state.categories=snap.docs.map(d=>({id:d.id,...d.data()}));render()
+  },err=>console.error("categories",err));
+  onSnapshot(collection(db,"reviews"),snap=>{
+    state.reviews=snap.docs.map(d=>({id:d.id,...d.data()}));render()
+  },err=>console.error("reviews",err));
+  onSnapshot(collection(db,"orders"),snap=>{
+    state.orders=snap.docs.map(d=>({id:d.id,...d.data()}));render()
+  },err=>console.error("orders",err));
+}
+
+/* Default categories are created only after an authenticated admin logs in. */
+async function seedDefaults(){
+  if(!state.admin)return;
+  if(state.categories.length)return;
+  const defaults=[
+    {nameEn:"Educational Materials",nameAm:"የትምህርት እቃዎች",icon:"📚",active:true},
+    {nameEn:"Cosmetics & Beauty",nameAm:"ኮስሜቲክስ እና ውበት",icon:"💄",active:true},
+    {nameEn:"Electronics",nameAm:"ኤሌክትሮኒክስ",icon:"🎧",active:true},
+    {nameEn:"Stationery",nameAm:"የጽሕፈት መሳሪያዎች",icon:"✏️",active:true},
+    {nameEn:"Other",nameAm:"ሌሎች",icon:"🛍️",active:true}
+  ];
+  for(const c of defaults)await addDoc(collection(db,"categories"),{...c,createdAt:serverTimestamp()});
+}
+
+onAuthStateChanged(auth,async user=>{
+  state.currentUser=user||null;
+  state.admin=false;
+  if(user){
+    try{
+      const a=await getDoc(doc(db,"admins",user.uid));
+      if(a.exists()&&a.data().active===true){
+        state.admin=true;
+        await seedDefaults();
+      }
+    }catch(e){console.error("Admin verification",e)}
+  }
+  render();
+});
+
+/* Startup: anonymous sign-in lets students securely create their own orders/reviews. */
+(async function init(){
+  render();
+  subscribe();
+  try{if(!auth.currentUser)await signInAnonymously(auth)}
+  catch(e){console.warn("Enable Anonymous Authentication in Firebase:",e)}
+})();
+</script>
+</body>
+</html>
