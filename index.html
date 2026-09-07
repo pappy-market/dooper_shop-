@@ -8,7 +8,6 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
 <style>
 :root{
   --bg:#ffffff; --fg:#0a0a0a; --muted:#6b6b6b; --line:#e6e6e6;
@@ -97,8 +96,9 @@ nav.bottom-nav .nav-icon{font-size:20px;}
 .form-group{padding:0 16px 14px;}
 .form-group label{font-size:12px; font-weight:600; display:block; margin-bottom:6px; color:var(--muted);}
 .form-group input, .form-group textarea, .form-group select{width:100%; border:1px solid var(--line); border-radius:10px; padding:11px; font-size:14px; background:var(--bg); color:var(--fg);}
+.form-hint{font-size:11px; color:var(--muted); margin-top:4px;}
 .order-summary-box{margin:0 16px 16px; border:1px solid var(--line); border-radius:14px; padding:14px;}
-.toast{position:fixed; bottom:85px; left:50%; transform:translateX(-50%); background:#111; color:#fff; padding:10px 18px; border-radius:20px; font-size:13px; z-index:200; opacity:0; transition:opacity .25s;}
+.toast{position:fixed; bottom:85px; left:50%; transform:translateX(-50%); background:#111; color:#fff; padding:10px 18px; border-radius:20px; font-size:13px; z-index:200; opacity:0; transition:opacity .25s; max-width:85%; text-align:center;}
 .toast.show{opacity:1;}
 .confirm-box{text-align:center; padding:40px 24px;}
 .confirm-box .check{font-size:50px; margin-bottom:12px;}
@@ -168,7 +168,7 @@ nav.bottom-nav .nav-icon{font-size:20px;}
   <div class="form-group"><label data-i18n="room_number">Room Number</label><input id="ck-room"></div>
   <div class="form-group"><label data-i18n="phone_number">Phone Number</label><input id="ck-phone" type="tel"></div>
   <div class="form-group"><label data-i18n="order_notes">Order Notes (optional)</label><textarea id="ck-notes" rows="3"></textarea></div>
-  <div class="form-group"><button class="btn btn-solid" style="width:100%;" onclick="submitOrder()" data-i18n="place_order">Place Order</button></div>
+  <div class="form-group"><button class="btn btn-solid" style="width:100%;" onclick="submitOrder()" id="ck-submit-btn" data-i18n="place_order">Place Order</button></div>
 </div>
 
 <div class="page" id="page-confirm">
@@ -176,7 +176,7 @@ nav.bottom-nav .nav-icon{font-size:20px;}
     <div class="check">✅</div>
     <h2 data-i18n="order_placed">Order Placed!</h2>
     <div class="order-num" id="confirm-order-num"></div>
-    <p style="color:var(--muted); font-size:14px;" data-i18n="order_placed_desc">Your order has been received. Contact the seller to confirm delivery.</p>
+    <p style="color:var(--muted); font-size:14px;" data-i18n="order_placed_desc">Opening Telegram to confirm your order with the seller...</p>
     <div style="margin-top:24px;">
       <button class="btn btn-solid" style="width:100%; margin-bottom:10px;" onclick="contactSeller()" data-i18n="contact_seller">Contact Seller on Telegram</button>
       <button class="btn btn-outline" style="width:100%;" onclick="showPage('page-home')" data-i18n="continue_shopping">Continue Shopping</button>
@@ -235,7 +235,6 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const auth = firebase.auth();
-const storage = firebase.storage();
 
 const tg = window.Telegram?.WebApp;
 if (tg) { tg.ready(); tg.expand(); }
@@ -250,7 +249,7 @@ const translations = {
     full_name:"Full Name", university_id:"University ID", telegram_username:"Telegram Username",
     dorm_block:"Dorm / Block", room_number:"Room Number", phone_number:"Phone Number",
     order_notes:"Order Notes (optional)", place_order:"Place Order", order_placed:"Order Placed!",
-    order_placed_desc:"Your order has been received. Contact the seller to confirm delivery.",
+    order_placed_desc:"Opening Telegram to confirm your order with the seller...",
     contact_seller:"Contact Seller on Telegram", continue_shopping:"Continue Shopping",
     add_to_cart:"Add to Cart", buy_now:"Buy Now", reviews:"Reviews", write_review:"Write a review...",
     submit_review:"Submit Review", empty_cart:"Your cart is empty", empty_orders:"No orders yet",
@@ -262,7 +261,7 @@ const translations = {
     full_name:"ሙሉ ስም", university_id:"የዩኒቨርሲቲ መታወቂያ", telegram_username:"የቴሌግራም መለያ ስም",
     dorm_block:"ዶርም / ብሎክ", room_number:"የክፍል ቁጥር", phone_number:"ስልክ ቁጥር",
     order_notes:"ማስታወሻ (አማራጭ)", place_order:"ትዕዛዝ ያስገቡ", order_placed:"ትዕዛዝ ገብቷል!",
-    order_placed_desc:"ትዕዛዝዎ ደርሶናል። ለማድረስ ከሻጩ ጋር ይገናኙ።",
+    order_placed_desc:"ትዕዛዝዎን ለማረጋገጥ ወደ ቴሌግራም በመክፈት ላይ...",
     contact_seller:"በቴሌግራም ሻጩን ያግኙ", continue_shopping:"ግዢ ይቀጥሉ",
     add_to_cart:"ወደ ጋሪ ጨምር", buy_now:"አሁን ይግዙ", reviews:"ግምገማዎች", write_review:"ግምገማ ይጻፉ...",
     submit_review:"ግምገማ አስገባ", empty_cart:"ጋሪዎ ባዶ ነው", empty_orders:"እስካሁን ትዕዛዝ የለም",
@@ -288,6 +287,7 @@ let cart = JSON.parse(localStorage.getItem('bdu_cart') || '[]');
 let currentProduct = null;
 let pdQty = 1;
 let pdStarRating = 5;
+let lastOrderMessage = ''; // built fresh each order, used by contactSeller()
 
 function saveCart(){ localStorage.setItem('bdu_cart', JSON.stringify(cart)); updateCartCount(); }
 function updateCartCount(){
@@ -299,7 +299,7 @@ function updateCartCount(){
 function showToast(msg){
   const el = document.getElementById('toast');
   el.textContent = msg; el.classList.add('show');
-  setTimeout(()=>el.classList.remove('show'), 2000);
+  setTimeout(()=>el.classList.remove('show'), 2500);
 }
 function fmtPrice(n){ return Number(n).toLocaleString() + ' ETB'; }
 
@@ -438,7 +438,7 @@ function buyNowFromDetail(){
     qty:pdQty, stock:currentProduct.stock||0 }];
   saveCart();
   closeProductSheet();
-  showPage('page-cart');
+  goToCheckout();
 }
 
 function loadReviews(productId){
@@ -526,6 +526,29 @@ function renderCheckoutSummary(){
 }
 
 function generateOrderNumber(){ return 'BDU-' + Date.now().toString().slice(-8); }
+
+/* Build the human-readable message sent to the seller on Telegram */
+function buildOrderMessage(orderNumber, name, uid, tgUsername, dorm, room, phone, notes, items, total){
+  let lines = [];
+  lines.push(`🛍️ New Order: ${orderNumber}`);
+  lines.push('');
+  lines.push('Items:');
+  items.forEach(i=>{
+    lines.push(`• ${i.nameEn} × ${i.qty} — ${fmtPrice(i.lineTotal)}`);
+  });
+  lines.push('');
+  lines.push(`Total: ${fmtPrice(total)}`);
+  lines.push('');
+  lines.push(`Name: ${name}`);
+  if(uid) lines.push(`University ID: ${uid}`);
+  if(tgUsername) lines.push(`Telegram: ${tgUsername}`);
+  if(dorm) lines.push(`Dorm/Block: ${dorm}`);
+  if(room) lines.push(`Room: ${room}`);
+  lines.push(`Phone: ${phone}`);
+  if(notes) lines.push(`Notes: ${notes}`);
+  return lines.join('\n');
+}
+
 function submitOrder(){
   const name = document.getElementById('ck-name').value.trim();
   const uid = document.getElementById('ck-uid').value.trim();
@@ -535,30 +558,46 @@ function submitOrder(){
   const phone = document.getElementById('ck-phone').value.trim();
   const notes = document.getElementById('ck-notes').value.trim();
   if(!name || !phone || cart.length===0){ showToast(currentLang==='am' ? 'እባክዎ ስም እና ስልክ ያስገቡ' : 'Please enter name and phone'); return; }
+
+  const btn = document.getElementById('ck-submit-btn');
+  btn.disabled = true; btn.textContent = '...';
+
   const orderNumber = generateOrderNumber();
   const subtotal = cart.reduce((s,i)=>s+i.price*i.qty,0);
+  const items = cart.map(i=>({ productId:i.id, nameEn:i.nameEn, nameAm:i.nameAm, qty:i.qty, unitPrice:i.price, lineTotal:i.price*i.qty }));
   const orderData = {
     orderNumber, customerName:name, universityId:uid, telegramUsername:tgUsername,
     telegramUserId: tgUser ? String(tgUser.id) : null,
-    dorm, room, phone, notes,
-    items: cart.map(i=>({ productId:i.id, nameEn:i.nameEn, nameAm:i.nameAm, qty:i.qty, unitPrice:i.price, lineTotal:i.price*i.qty })),
-    total: subtotal, status:'pending', createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    dorm, room, phone, notes, items, total: subtotal, status:'pending',
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
   };
+
   db.collection('orders').add(orderData).then(async ()=>{
     const batch = db.batch();
     cart.forEach(item=>{ batch.update(db.collection('products').doc(item.id), { stock: firebase.firestore.FieldValue.increment(-item.qty) }); });
     await batch.commit().catch(e=>console.warn('stock update failed', e));
+
+    lastOrderMessage = buildOrderMessage(orderNumber, name, uid, tgUsername, dorm, room, phone, notes, items, subtotal);
     localStorage.setItem('bdu_last_order', orderNumber);
     cart = []; saveCart();
     document.getElementById('confirm-order-num').textContent = orderNumber;
     showPage('page-confirm');
-  }).catch(err=>{ console.error(err); showToast('Failed to place order. Try again.'); });
+
+    // Auto-open Telegram with the purchase details immediately
+    contactSeller();
+  }).catch(err=>{
+    console.error(err);
+    showToast('Failed to place order. Try again.');
+  }).finally(()=>{
+    btn.disabled = false; btn.textContent = t('place_order');
+  });
 }
+
 function contactSeller(){
-  const orderNum = document.getElementById('confirm-order-num').textContent;
-  const msg = encodeURIComponent(`Hi, I just placed order ${orderNum} on BDU Market.`);
+  const msg = encodeURIComponent(lastOrderMessage || `Hi, I'd like to order from BDU Market.`);
   const url = `https://t.me/${SELLER_USERNAME}?text=${msg}`;
-  if(tg) tg.openTelegramLink(url); else window.open(url, '_blank');
+  if(tg && tg.openTelegramLink) tg.openTelegramLink(url);
+  else window.open(url, '_blank');
 }
 
 function renderOrders(){
@@ -578,8 +617,7 @@ function renderOrders(){
     }).join('');
   }).catch(err=>{
     console.error(err);
-    // Firestore needs a composite index for this query the first time — console will log a direct link to create it.
-    listEl.innerHTML = `<div class="empty-state">Error loading orders. If this persists, check the browser console for a Firestore index link.</div>`;
+    listEl.innerHTML = `<div class="empty-state">Error loading orders. Check console for a Firestore index link if needed.</div>`;
   });
 }
 
@@ -608,7 +646,6 @@ let adminProducts = [];
 let adminCategories = [];
 let editingProductId = null;
 let editingCategoryId = null;
-let pendingImageFiles = [];
 
 auth.onAuthStateChanged(user=>{ isAdmin = !!user; });
 
@@ -663,15 +700,24 @@ function buildAdminPageIfNeeded(){
       <div class="form-group"><label>Stock Quantity</label><input id="pf-stock" type="number"></div>
       <div class="form-group"><label>Description (English)</label><textarea id="pf-descEn" rows="3"></textarea></div>
       <div class="form-group"><label>Description (Amharic)</label><textarea id="pf-descAm" rows="3"></textarea></div>
-      <div class="form-group"><label>Product Images</label>
-        <input id="pf-image-input" type="file" accept="image/*" multiple onchange="onImageFilesSelected(event)">
-        <div id="pf-image-preview" style="display:flex; gap:8px; margin-top:8px; flex-wrap:wrap;"></div></div>
+      <div class="form-group">
+        <label>Image URL</label>
+        <input id="pf-image-url" placeholder="https://example.com/photo.jpg">
+        <div class="form-hint">Upload your photo to a free host (e.g. imgbb.com, postimages.org) and paste the direct image link here.</div>
+        <div id="pf-image-preview" style="display:flex; gap:8px; margin-top:8px; flex-wrap:wrap;"></div>
+      </div>
       <div class="form-group" style="display:flex; align-items:center; gap:8px;"><input type="checkbox" id="pf-featured" style="width:auto;"><label style="margin:0;">Featured</label></div>
       <div class="form-group" style="display:flex; align-items:center; gap:8px;"><input type="checkbox" id="pf-active" checked style="width:auto;"><label style="margin:0;">Active (visible to students)</label></div>
       <div class="form-group"><button class="btn btn-solid" style="width:100%;" onclick="saveProduct()" id="pf-save-btn">Save Product</button></div>
     </div>
   </div>`;
   document.body.appendChild(pf);
+  document.getElementById('pf-image-url').addEventListener('input', (e)=>{
+    const url = e.target.value.trim();
+    document.getElementById('pf-image-preview').innerHTML = url
+      ? `<img src="${url}" style="width:60px; height:60px; border-radius:8px; object-fit:cover;" onerror="this.style.opacity=0.3">`
+      : '';
+  });
 
   const cf = document.createElement('div');
   cf.innerHTML = `
@@ -737,10 +783,9 @@ function renderAdminProductsList(){
 
 function openProductForm(id){
   editingProductId = id || null;
-  pendingImageFiles = [];
-  document.getElementById('pf-image-input').value = '';
   document.getElementById('pf-title').textContent = id ? 'Edit Product' : 'Add Product';
   document.getElementById('pf-image-preview').innerHTML = '';
+  document.getElementById('pf-image-url').value = '';
   const sel = document.getElementById('pf-category');
   sel.innerHTML = adminCategories.map(c=>`<option value="${c.id}">${c.nameEn}</option>`).join('');
   if(id){
@@ -754,8 +799,10 @@ function openProductForm(id){
     document.getElementById('pf-descAm').value = p.descriptionAm || '';
     document.getElementById('pf-featured').checked = !!p.featured;
     document.getElementById('pf-active').checked = !!p.active;
-    const existingImgs = p.images && p.images.length ? p.images : (p.imageUrl ? [p.imageUrl] : []);
-    document.getElementById('pf-image-preview').innerHTML = existingImgs.map(src=>`<img src="${src}" style="width:60px; height:60px; border-radius:8px; object-fit:cover;">`).join('');
+    const existingUrl = p.imageUrl || (p.images && p.images[0]) || '';
+    document.getElementById('pf-image-url').value = existingUrl;
+    if(existingUrl) document.getElementById('pf-image-preview').innerHTML =
+      `<img src="${existingUrl}" style="width:60px; height:60px; border-radius:8px; object-fit:cover;">`;
   } else {
     ['pf-nameEn','pf-nameAm','pf-price','pf-stock','pf-descEn','pf-descAm'].forEach(fid=>document.getElementById(fid).value='');
     document.getElementById('pf-featured').checked = false;
@@ -768,59 +815,12 @@ function closeProductForm(){
   document.getElementById('pf-overlay').classList.remove('show');
   document.getElementById('pf-sheet').classList.remove('show');
 }
-function onImageFilesSelected(evt){
-  pendingImageFiles = Array.from(evt.target.files);
-  const preview = document.getElementById('pf-image-preview');
-  preview.innerHTML = '';
-  pendingImageFiles.forEach(file=>{
-    const reader = new FileReader();
-    reader.onload = e=>{
-      const img = document.createElement('img');
-      img.src = e.target.result;
-      img.style = 'width:60px; height:60px; border-radius:8px; object-fit:cover;';
-      preview.appendChild(img);
-    };
-    reader.readAsDataURL(file);
-  });
-}
-function compressImage(file, maxSize=1000, quality=0.75){
-  return new Promise((resolve,reject)=>{
-    const reader = new FileReader();
-    reader.onload = e=>{
-      const img = new Image();
-      img.onload = ()=>{
-        let {width,height} = img;
-        if(width > maxSize || height > maxSize){
-          const ratio = Math.min(maxSize/width, maxSize/height);
-          width = width*ratio; height = height*ratio;
-        }
-        const canvas = document.createElement('canvas');
-        canvas.width = width; canvas.height = height;
-        canvas.getContext('2d').drawImage(img,0,0,width,height);
-        canvas.toBlob(blob=>resolve(blob), 'image/jpeg', quality);
-      };
-      img.onerror = reject;
-      img.src = e.target.result;
-    };
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
-}
-async function uploadProductImages(productId){
-  const urls = [];
-  for(const file of pendingImageFiles){
-    const compressed = await compressImage(file);
-    const path = `products/${productId}/${Date.now()}_${Math.random().toString(36).slice(2)}.jpg`;
-    const ref = storage.ref(path);
-    await ref.put(compressed);
-    urls.push(await ref.getDownloadURL());
-  }
-  return urls;
-}
+
 async function saveProduct(){
   const btn = document.getElementById('pf-save-btn');
   btn.disabled = true; btn.textContent = 'Saving...';
   try{
+    const imageUrl = document.getElementById('pf-image-url').value.trim();
     const data = {
       nameEn: document.getElementById('pf-nameEn').value.trim(),
       nameAm: document.getElementById('pf-nameAm').value.trim(),
@@ -829,6 +829,8 @@ async function saveProduct(){
       stock: Number(document.getElementById('pf-stock').value) || 0,
       descriptionEn: document.getElementById('pf-descEn').value.trim(),
       descriptionAm: document.getElementById('pf-descAm').value.trim(),
+      imageUrl: imageUrl,
+      images: imageUrl ? [imageUrl] : [],
       featured: document.getElementById('pf-featured').checked,
       active: document.getElementById('pf-active').checked,
       updatedAt: firebase.firestore.FieldValue.serverTimestamp()
@@ -840,13 +842,9 @@ async function saveProduct(){
       data.createdAt = firebase.firestore.FieldValue.serverTimestamp();
       const docRef = await db.collection('products').add(data);
       productId = docRef.id;
+    } else {
+      await db.collection('products').doc(productId).set(data, {merge:true});
     }
-    if(pendingImageFiles.length > 0){
-      const urls = await uploadProductImages(productId);
-      data.images = urls;
-      data.imageUrl = urls[0];
-    }
-    await db.collection('products').doc(productId).set(data, {merge:true});
     showToast('Product saved');
     closeProductForm();
     loadAdminProducts();
